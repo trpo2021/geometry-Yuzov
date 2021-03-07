@@ -1,0 +1,7 @@
+#Ignore executable files, object files
+*.exe
+*.obj
+*.o
+#Ignore Backup files of the text editor used
+.main.c.swp
+main.c~
