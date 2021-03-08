@@ -13,16 +13,9 @@ bool is_number(int* circumflex_counter, char** first, char** second);
 bool is_EOF(int* circumflex_counter, char** first);
 bool is_letter(int* circumflex_counter, char** first, char** second);
 bool to_lower_all_str(char* array);
-bool parse_circle(
-        int* circumflex_counter,
-        char** curs,
-        char** end,
-        unsigned int* record_counter);
-bool parse_triangle(
-        int* circumflex_counter,
-        char** curs,
-        char** end,
-        unsigned int* record_counter);
+bool parse_circle(int* circumflex_counter,char** curs,char** end,unsigned int* record_counter);
+bool parse_triangle(int* circumflex_counter,char** curs,char** end,unsigned int* record_counter);
+bool parse_value(double *var, int *circumflex_counter, char ***curs, char ***end);
 
 struct Circle {
     double x[SIZE_OF_ARR];
@@ -160,6 +153,17 @@ bool to_lower_all_str(char* array)
     for (int i = 0; i < SIZE_OF_ARR; i++) {
         array[i] = tolower(array[i]);
     }
+    return true;
+}
+
+bool parse_value( double* var, int* circumflex_counter, char*** curs, char*** end)
+{
+    bool error = is_number(circumflex_counter, *curs, *end);
+    if (error != true)
+        return false;
+    *var = strtod(**curs, *end);
+    add_word_length(circumflex_counter, *curs, *end);
+    skip_space(circumflex_counter, *curs, *end);
     return true;
 }
 
