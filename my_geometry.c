@@ -13,9 +13,18 @@ bool is_number(int* circumflex_counter, char** first, char** second);
 bool is_EOF(int* circumflex_counter, char** first);
 bool is_letter(int* circumflex_counter, char** first, char** second);
 bool to_lower_all_str(char* array);
-bool parse_circle(int* circumflex_counter,char** curs,char** end,unsigned int* record_counter);
-bool parse_triangle(int* circumflex_counter,char** curs,char** end,unsigned int* record_counter);
-bool parse_value(double *var, int *circumflex_counter, char ***curs, char ***end);
+bool parse_circle(
+        int* circumflex_counter,
+        char** curs,
+        char** end,
+        unsigned int* record_counter);
+bool parse_triangle(
+        int* circumflex_counter,
+        char** curs,
+        char** end,
+        unsigned int* record_counter);
+bool parse_value(
+        double* var, int* circumflex_counter, char*** curs, char*** end);
 
 struct Circle {
     double x[SIZE_OF_ARR];
@@ -156,7 +165,8 @@ bool to_lower_all_str(char* array)
     return true;
 }
 
-bool parse_value( double* var, int* circumflex_counter, char*** curs, char*** end)
+bool parse_value(
+        double* var, int* circumflex_counter, char*** curs, char*** end)
 {
     bool error = is_number(circumflex_counter, *curs, *end);
     if (error != true)
@@ -167,12 +177,15 @@ bool parse_value( double* var, int* circumflex_counter, char*** curs, char*** en
     return true;
 }
 
-bool parse_circle(int* circumflex_counter,char** curs,char** end,unsigned int* record_counter)
+bool parse_circle(
+        int* circumflex_counter,
+        char** curs,
+        char** end,
+        unsigned int* record_counter)
 {
     struct Circle var_circle;
     bool error = true;
-    for (;;)
-    {
+    for (;;) {
         double x, y, radius;
         add_word_length(circumflex_counter, curs, end);
         skip_space(circumflex_counter, curs, end);
@@ -198,8 +211,7 @@ bool parse_circle(int* circumflex_counter,char** curs,char** end,unsigned int* r
             break;
         skip_space(circumflex_counter, curs, end);
         error = is_EOF(circumflex_counter, curs);
-        if (error == true)
-        {
+        if (error == true) {
             var_circle.x[*record_counter] = x;
             var_circle.y[*record_counter] = y;
             var_circle.radius[*record_counter] = radius;
@@ -210,9 +222,7 @@ bool parse_circle(int* circumflex_counter,char** curs,char** end,unsigned int* r
                    var_circle.radius[*record_counter]);
             *record_counter = *record_counter + 1;
             break;
-        }
-        else
-        {
+        } else {
             printf("The circle has NOT been added !\n");
             break;
         }
@@ -220,93 +230,75 @@ bool parse_circle(int* circumflex_counter,char** curs,char** end,unsigned int* r
     return true;
 }
 
-bool parse_triangle(
-        int* circumflex_counter,
-        char** curs,
-        char** end,
-        unsigned int* record_counter)
+bool parse_triangle(int* circumflex_counter,char** curs,char** end,unsigned int* record_counter)
 {
     struct Triangle var_triangle;
     bool error = true;
-    for (;;) {
+    for (;;) 
+    {
+        double x1, x2, x3, x4, y1, y2, y3, y4;
+        bool flag = false;
         add_word_length(circumflex_counter, curs, end);
         skip_space(circumflex_counter, curs, end);
-        error = is_sign(40, circumflex_counter, curs, end);
+        for (int i = 0; i < 2; i++) {
+            error = is_sign(40, circumflex_counter, curs, end);
+            if (error != true) {
+                flag = true;
+                break;
+            }
+            skip_space(circumflex_counter, curs, end);
+        }
+        if (flag == true)
+            break;
+        for (int i = 0; i < 3; i++) {
+            double varx, vary;
+            error = parse_value(&varx, circumflex_counter, &curs, &end);
+            if (error != true) {
+                flag = true;
+                break;
+            }
+            error = parse_value(&vary, circumflex_counter, &curs, &end);
+            if (error != true) {
+                flag = true;
+                break;
+            }
+            error = is_sign(44, circumflex_counter, curs, end);
+            if (error != true) {
+                flag = true;
+                break;
+            }
+            if (i == 0) {
+                x1 = varx;
+                y1 = vary;
+            }
+            if (i == 1) {
+                x2 = varx;
+                y2 = vary;
+            }
+            if (i == 2) {
+                x3 = varx;
+                y3 = vary;
+            }
+            skip_space(circumflex_counter, curs, end);
+        }
+        if (flag == true)
+            break;
+        error = parse_value(&x4, circumflex_counter, &curs, &end);
         if (error != true)
             break;
-        skip_space(circumflex_counter, curs, end);
-        error = is_sign(40, circumflex_counter, curs, end);
+        error = parse_value(&y4, circumflex_counter, &curs, &end);
         if (error != true)
             break;
-        skip_space(circumflex_counter, curs, end); //
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
+        for (int i = 0; i < 2; i++) {
+            error = is_sign(41, circumflex_counter, curs, end);
+            if (error != true) {
+                flag = true;
+                break;
+            }
+            skip_space(circumflex_counter, curs, end);
+        }
+        if (flag == true)
             break;
-        double x1 = strtod(*curs, end); //ПАРСИНГ X
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        double y1 = strtod(*curs, end); //ПАРСИНГ Y1
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_sign(44, circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        skip_space(circumflex_counter, curs, end); //
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        double x2 = strtod(*curs, end); //ПАРСИНГ X2
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        double y2 = strtod(*curs, end); //ПАРСИНГ Y2
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_sign(44, circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        skip_space(circumflex_counter, curs, end); //
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        double x3 = strtod(*curs, end); //ПАРСИНГ X3
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        double y3 = strtod(*curs, end); //ПАРСИНГ Y3
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_sign(44, circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        double x4 = strtod(*curs, end); //ПАРСИНГ X4
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        double y4 = strtod(*curs, end); //ПАРСИНГ Y4
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_sign(41, circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        skip_space(circumflex_counter, curs, end);
-        error = is_sign(41, circumflex_counter, curs, end);
-        if (error != true)
-            break;
-        skip_space(circumflex_counter, curs, end);
         error = is_EOF(circumflex_counter, curs);
         if ((error == true) && (x1 == x4) && (y1 == y4)) {
             var_triangle.x1[*record_counter] = x1;
