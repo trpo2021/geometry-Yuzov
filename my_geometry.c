@@ -167,49 +167,39 @@ bool parse_value( double* var, int* circumflex_counter, char*** curs, char*** en
     return true;
 }
 
-bool parse_circle(
-        int* circumflex_counter,
-        char** curs,
-        char** end,
-        unsigned int* record_counter)
+bool parse_circle(int* circumflex_counter,char** curs,char** end,unsigned int* record_counter)
 {
     struct Circle var_circle;
     bool error = true;
-    for (;;) {
+    for (;;)
+    {
+        double x, y, radius;
         add_word_length(circumflex_counter, curs, end);
         skip_space(circumflex_counter, curs, end);
         error = is_sign(40, circumflex_counter, curs, end);
         if (error != true)
             break;
         skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
+        error = parse_value(&x, circumflex_counter, &curs, &end);
         if (error != true)
             break;
-        double x = strtod(*curs, end); //ПАРСИНГ X
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
+        error = parse_value(&y, circumflex_counter, &curs, &end);
         if (error != true)
             break;
-        double y = strtod(*curs, end); //ПАРСИНГ Y
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
         error = is_sign(44, circumflex_counter, curs, end);
         if (error != true)
             break;
         skip_space(circumflex_counter, curs, end);
-        error = is_number(circumflex_counter, curs, end);
+        error = parse_value(&radius, circumflex_counter, &curs, &end);
         if (error != true)
             break;
-        double radius = strtod(*curs, end); //ПАРСИНГ РАДИУСА
-        add_word_length(circumflex_counter, curs, end);
-        skip_space(circumflex_counter, curs, end);
         error = is_sign(41, circumflex_counter, curs, end);
         if (error != true)
             break;
         skip_space(circumflex_counter, curs, end);
         error = is_EOF(circumflex_counter, curs);
-        if (error == true) {
+        if (error == true)
+        {
             var_circle.x[*record_counter] = x;
             var_circle.y[*record_counter] = y;
             var_circle.radius[*record_counter] = radius;
@@ -220,7 +210,9 @@ bool parse_circle(
                    var_circle.radius[*record_counter]);
             *record_counter = *record_counter + 1;
             break;
-        } else {
+        }
+        else
+        {
             printf("The circle has NOT been added !\n");
             break;
         }
