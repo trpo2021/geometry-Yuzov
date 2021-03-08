@@ -12,7 +12,6 @@ bool add_word_length(int* circumflex_counter, char** first, char** second);
 bool is_number(int* circumflex_counter, char** first, char** second);
 bool is_EOF(int* circumflex_counter, char** first);
 bool is_letter(int* circumflex_counter, char** first, char** second);
-bool is_triangle(int* circumflex_counter, char** first, char** second);
 bool to_lower_all_str(char* array);
 bool parse_circle(
         int* circumflex_counter,
