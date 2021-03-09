@@ -169,7 +169,7 @@ bool parse_circle(int *circumflex_counter, char **curs, char **end,
     double x, y, radius;
     add_word_length(circumflex_counter, curs, end);
     skip_space(circumflex_counter, curs, end);
-    error = is_sign(40, circumflex_counter, curs, end);
+    error = is_sign('(', circumflex_counter, curs, end);
     if (!error)
       break;
     skip_space(circumflex_counter, curs, end);
@@ -179,14 +179,14 @@ bool parse_circle(int *circumflex_counter, char **curs, char **end,
     error = parse_value(&y, circumflex_counter, &curs, &end);
     if (!error)
       break;
-    error = is_sign(44, circumflex_counter, curs, end);
+    error = is_sign(',', circumflex_counter, curs, end);
     if (!error)
       break;
     skip_space(circumflex_counter, curs, end);
     error = parse_value(&radius, circumflex_counter, &curs, &end);
     if (!error)
       break;
-    error = is_sign(41, circumflex_counter, curs, end);
+    error = is_sign(')', circumflex_counter, curs, end);
     if (!error)
       break;
     skip_space(circumflex_counter, curs, end);
@@ -219,7 +219,7 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
     add_word_length(circumflex_counter, curs, end);
     skip_space(circumflex_counter, curs, end);
     for (int i = 0; i < 2; i++) {
-      error = is_sign(40, circumflex_counter, curs, end);
+      error = is_sign('(', circumflex_counter, curs, end);
       if (!error) {
         exit_anticipatorily = true;
         break;
@@ -240,7 +240,7 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
         exit_anticipatorily = true;
         break;
       }
-      error = is_sign(44, circumflex_counter, curs, end);
+      error = is_sign(',', circumflex_counter, curs, end);
       if (!error) {
         exit_anticipatorily = true;
         break;
@@ -268,7 +268,7 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
     if (!error)
       break;
     for (int i = 0; i < 2; i++) {
-      error = is_sign(41, circumflex_counter, curs, end);
+      error = is_sign(')', circumflex_counter, curs, end);
       if (!error) {
         exit_anticipatorily = true;
         break;
