@@ -149,7 +149,7 @@ bool to_lower_all_str(char *array) {
 bool parse_value(double *var, int *circumflex_counter, char ***curs,
                  char ***end) {
   bool error = is_number(circumflex_counter, *curs, *end);
-  if (error != true)
+  if (!error)
     return false;
   *var = strtod(**curs, *end);
   add_word_length(circumflex_counter, *curs, *end);
@@ -166,24 +166,24 @@ bool parse_circle(int *circumflex_counter, char **curs, char **end,
     add_word_length(circumflex_counter, curs, end);
     skip_space(circumflex_counter, curs, end);
     error = is_sign(40, circumflex_counter, curs, end);
-    if (error != true)
+    if (!error)
       break;
     skip_space(circumflex_counter, curs, end);
     error = parse_value(&x, circumflex_counter, &curs, &end);
-    if (error != true)
+    if (!error)
       break;
     error = parse_value(&y, circumflex_counter, &curs, &end);
-    if (error != true)
+    if (!error)
       break;
     error = is_sign(44, circumflex_counter, curs, end);
-    if (error != true)
+    if (!error)
       break;
     skip_space(circumflex_counter, curs, end);
     error = parse_value(&radius, circumflex_counter, &curs, &end);
-    if (error != true)
+    if (!error)
       break;
     error = is_sign(41, circumflex_counter, curs, end);
-    if (error != true)
+    if (!error)
       break;
     skip_space(circumflex_counter, curs, end);
     error = is_EOF(circumflex_counter, curs);
@@ -216,7 +216,7 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
     skip_space(circumflex_counter, curs, end);
     for (int i = 0; i < 2; i++) {
       error = is_sign(40, circumflex_counter, curs, end);
-      if (error != true) {
+      if (!error) {
         flag = true;
         break;
       }
@@ -227,17 +227,17 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
     for (int i = 0; i < 3; i++) {
       double varx, vary;
       error = parse_value(&varx, circumflex_counter, &curs, &end);
-      if (error != true) {
+      if (!error) {
         flag = true;
         break;
       }
       error = parse_value(&vary, circumflex_counter, &curs, &end);
-      if (error != true) {
+      if (!error) {
         flag = true;
         break;
       }
       error = is_sign(44, circumflex_counter, curs, end);
-      if (error != true) {
+      if (!error) {
         flag = true;
         break;
       }
@@ -258,14 +258,14 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
     if (flag == true)
       break;
     error = parse_value(&x4, circumflex_counter, &curs, &end);
-    if (error != true)
+    if (!error)
       break;
     error = parse_value(&y4, circumflex_counter, &curs, &end);
-    if (error != true)
+    if (!error)
       break;
     for (int i = 0; i < 2; i++) {
       error = is_sign(41, circumflex_counter, curs, end);
-      if (error != true) {
+      if (!error) {
         flag = true;
         break;
       }
