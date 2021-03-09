@@ -61,7 +61,8 @@ int main() {
       {
         parse_triangle(&circumflex_counter, &curs, &end, &record_counter);
       } else {
-        for (int flag = 0; flag < circumflex_counter; flag++) {
+        for (int exit_anticipatorily = 0;
+             exit_anticipatorily < circumflex_counter; exit_anticipatorily++) {
           printf(" ");
         }
         printf("^\n");
@@ -83,7 +84,8 @@ bool skip_space(int *circumflex_counter, char **first, char **second) {
 
 bool is_sign(char token, int *circumflex_counter, char **first, char **second) {
   if (**first != token) {
-    for (int flag = 0; flag < *circumflex_counter; flag++) {
+    for (int exit_anticipatorily = 0; exit_anticipatorily < *circumflex_counter;
+         exit_anticipatorily++) {
       printf(" ");
     }
     printf("^\n");
@@ -105,7 +107,8 @@ bool add_word_length(int *circumflex_counter, char **first, char **second) {
 
 bool is_number(int *circumflex_counter, char **first, char **second) {
   if (isdigit(**first) == 0) {
-    for (int flag = 0; flag < *circumflex_counter; flag++) {
+    for (int exit_anticipatorily = 0; exit_anticipatorily < *circumflex_counter;
+         exit_anticipatorily++) {
       printf(" ");
     }
     printf("^\n");
@@ -117,7 +120,8 @@ bool is_number(int *circumflex_counter, char **first, char **second) {
 
 bool is_EOF(int *circumflex_counter, char **first) {
   if (**first != '\0') {
-    for (int flag = 0; flag < *circumflex_counter; flag++) {
+    for (int exit_anticipatorily = 0; exit_anticipatorily < *circumflex_counter;
+         exit_anticipatorily++) {
       printf(" ");
     }
     printf("^\n");
@@ -211,34 +215,34 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
   bool error = true;
   for (;;) {
     double x1, x2, x3, x4, y1, y2, y3, y4;
-    bool flag = false;
+    bool exit_anticipatorily = false;
     add_word_length(circumflex_counter, curs, end);
     skip_space(circumflex_counter, curs, end);
     for (int i = 0; i < 2; i++) {
       error = is_sign(40, circumflex_counter, curs, end);
       if (!error) {
-        flag = true;
+        exit_anticipatorily = true;
         break;
       }
       skip_space(circumflex_counter, curs, end);
     }
-    if (flag == true)
+    if (exit_anticipatorily == true)
       break;
     for (int i = 0; i < 3; i++) {
       double varx, vary;
       error = parse_value(&varx, circumflex_counter, &curs, &end);
       if (!error) {
-        flag = true;
+        exit_anticipatorily = true;
         break;
       }
       error = parse_value(&vary, circumflex_counter, &curs, &end);
       if (!error) {
-        flag = true;
+        exit_anticipatorily = true;
         break;
       }
       error = is_sign(44, circumflex_counter, curs, end);
       if (!error) {
-        flag = true;
+        exit_anticipatorily = true;
         break;
       }
       if (i == 0) {
@@ -255,7 +259,7 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
       }
       skip_space(circumflex_counter, curs, end);
     }
-    if (flag == true)
+    if (exit_anticipatorily == true)
       break;
     error = parse_value(&x4, circumflex_counter, &curs, &end);
     if (!error)
@@ -266,12 +270,12 @@ bool parse_triangle(int *circumflex_counter, char **curs, char **end,
     for (int i = 0; i < 2; i++) {
       error = is_sign(41, circumflex_counter, curs, end);
       if (!error) {
-        flag = true;
+        exit_anticipatorily = true;
         break;
       }
       skip_space(circumflex_counter, curs, end);
     }
-    if (flag == true)
+    if (exit_anticipatorily == true)
       break;
     error = is_EOF(circumflex_counter, curs);
     if ((error == true) && (x1 == x4) && (y1 == y4)) {
