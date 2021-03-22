@@ -8,6 +8,5 @@
 .main.c.swp
 main.c~
 test.c
-my_geometry.c
 #Ignore development environment files
 *.json
