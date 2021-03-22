@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <libgeometry/geometry.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -107,6 +108,16 @@ bool parse_value(
     return true;
 }
 
+double calculate_perimeter_circle(double radius)
+{
+    return 2 * M_PI * radius;
+}
+
+double calculate_area_circle(double radius)
+{
+    return M_PI * pow(radius, 2);
+}
+
 bool parse_circle(
         int* circumflex_counter,
         char** curs,
@@ -151,6 +162,8 @@ bool parse_circle(
                    var_circle.y[*record_counter],
                    var_circle.radius[*record_counter]);
             *record_counter = *record_counter + 1;
+            printf("perimeter = %lf\n", calculate_perimeter_circle(radius));
+            printf("area = %lf\n", calculate_area_circle(radius));
             break;
         } else {
             printf("The circle has NOT been added !\n");
@@ -262,3 +275,11 @@ bool parse_triangle(
     }
     return true;
 }
+
+/*double calculate_perimeter_triangle()
+{
+}
+
+bool calculate_area_triangle()
+{
+}*/
