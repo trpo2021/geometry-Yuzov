@@ -173,6 +173,45 @@ bool parse_circle(
     return true;
 }
 
+double calculate_side(double x1, double y1, double x2, double y2)
+{
+    return sqrt((pow((x2 - x1), 2)) + (pow((y2 - y1), 2)));
+}
+
+double calculate_perimeter_triangle(
+        struct Triangle var_triangle, int unsigned record_counter)
+{
+    double first_side = calculate_side(
+            var_triangle.x1[record_counter],
+            var_triangle.y1[record_counter],
+            var_triangle.x2[record_counter],
+            var_triangle.y2[record_counter]);
+    double second_side = calculate_side(
+            var_triangle.x2[record_counter],
+            var_triangle.y2[record_counter],
+            var_triangle.x3[record_counter],
+            var_triangle.y3[record_counter]);
+    double third_side = calculate_side(
+            var_triangle.x3[record_counter],
+            var_triangle.y3[record_counter],
+            var_triangle.x1[record_counter],
+            var_triangle.y1[record_counter]);
+    return first_side + second_side + third_side;
+}
+
+double calculate_area_triangle(
+        struct Triangle var_triangle, int unsigned record_counter)
+{
+    double x1 = var_triangle.x1[record_counter];
+    double x2 = var_triangle.x2[record_counter];
+    double x3 = var_triangle.x3[record_counter];
+    double y1 = var_triangle.y1[record_counter];
+    double y2 = var_triangle.y2[record_counter];
+    double y3 = var_triangle.y3[record_counter];
+    double result = fabs(((x1 - x3) * (y2 - y3) - (x2 - x3) * (y1 - y3)) / 2);
+    return result;
+}
+
 bool parse_triangle(
         int* circumflex_counter,
         char** curs,
@@ -266,6 +305,10 @@ bool parse_triangle(
                    var_triangle.y3[*record_counter],
                    var_triangle.x4[*record_counter],
                    var_triangle.y4[*record_counter]);
+            printf("perimeter = %lf\n",
+                   calculate_perimeter_triangle(var_triangle, *record_counter));
+            printf("area = %lf\n",
+                   calculate_area_triangle(var_triangle, *record_counter));
             *record_counter = *record_counter + 1;
             break;
         } else {
@@ -275,11 +318,3 @@ bool parse_triangle(
     }
     return true;
 }
-
-/*double calculate_perimeter_triangle()
-{
-}
-
-bool calculate_area_triangle()
-{
-}*/
