@@ -25,22 +25,22 @@ struct Triangle {
     double y4[SIZE_OF_ARR];
 };
 
-bool skip_space(int* circumflex_counter, char** first, char** second);
-bool is_sign(char token, int* circumflex_counter, char** first, char** second);
-bool add_word_length(int* circumflex_counter, char** first, char** second);
-bool is_number(int* circumflex_counter, char** first);
-bool is_EOF(int* circumflex_counter, char** first);
-bool is_letter(char** second);
-bool to_lower_all_str(char* array);
+bool prepare_input(char *array, int *circumflex_counter, char **first, char **second);
 bool parse_circle(
         int* circumflex_counter,
         char** curs,
         char** end,
-        unsigned int* record_counter);
+        unsigned int* record_counter,
+        struct Circle* var_circle);
 bool parse_triangle(
         int* circumflex_counter,
         char** curs,
         char** end,
-        unsigned int* record_counter);
-bool parse_value(
-        double* var, int* circumflex_counter, char*** curs, char*** end);
+        unsigned int* record_counter,
+        struct Triangle* var_triangle);
+double calculate_area_circle(double radius);
+double calculate_perimeter_circle(double radius);
+double calculate_perimeter_triangle(
+        double x1, double y1, double x2, double y2, double x3, double y3);
+double calculate_area_triangle(
+        double x1, double y1, double x2, double y2, double x3, double y3);

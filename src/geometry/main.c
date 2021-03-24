@@ -7,6 +7,8 @@
 
 int main()
 {
+    struct Circle var_circle;
+    struct Triangle var_triangle;
     char str[SIZE_OF_ARR];
     int circumflex_counter;
     char* curs;
@@ -19,18 +21,53 @@ int main()
         curs = str;
         end = str;
         circumflex_counter = 0;
-        to_lower_all_str(str);
-        skip_space(&circumflex_counter, &curs, &end);
-        is_letter(&end);
+        prepare_input(str, &circumflex_counter, &curs, &end);
         if (strncmp(curs, "circle", end - curs) == 0) //ПРОВЕРКА НА CIRCLE
         {
-            parse_circle(&circumflex_counter, &curs, &end, &record_counter);
+            if (parse_circle(
+                        &circumflex_counter,
+                        &curs,
+                        &end,
+                        &record_counter,
+                        &var_circle)
+                == true) {
+                printf("perimeter = %lf\n",
+                       calculate_perimeter_circle(
+                               var_circle.radius[record_counter]));
+                printf("area = %lf\n",
+                       calculate_area_circle(
+                               var_circle.radius[record_counter]));
+                record_counter++;
+            }
         } else {
             if (strncmp(curs, "triangle", end - curs)
                 == 0) //ПРОВЕРКА НА TRIANGLE
             {
-                parse_triangle(
-                        &circumflex_counter, &curs, &end, &record_counter);
+                if (parse_triangle(
+                            &circumflex_counter,
+                            &curs,
+                            &end,
+                            &record_counter,
+                            &var_triangle)
+                    == true) {
+                    printf("perimeter = %lf\n",
+                           calculate_perimeter_triangle(
+                                   var_triangle.x1[record_counter],
+                                   var_triangle.y1[record_counter],
+                                   var_triangle.x2[record_counter],
+                                   var_triangle.y2[record_counter],
+                                   var_triangle.x3[record_counter],
+                                   var_triangle.y3[record_counter]));
+                    printf("area = %lf\n",
+                           calculate_area_triangle(
+                                   var_triangle.x1[record_counter],
+                                   var_triangle.y1[record_counter],
+                                   var_triangle.x2[record_counter],
+                                   var_triangle.y2[record_counter],
+                                   var_triangle.x3[record_counter],
+                                   var_triangle.y3[record_counter]));
+                    record_counter++;
+                }
             } else {
                 for (int exit_anticipatorily = 0;
                      exit_anticipatorily < circumflex_counter;

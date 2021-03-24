@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-bool skip_space(int* circumflex_counter, char** first, char** second)
+static bool skip_space(int* circumflex_counter, char** first, char** second)
 {
     while (isspace(**first)) {
         *first = *first + 1;
@@ -15,7 +15,8 @@ bool skip_space(int* circumflex_counter, char** first, char** second)
     return true;
 }
 
-bool is_sign(char token, int* circumflex_counter, char** first, char** second)
+static bool
+is_sign(char token, int* circumflex_counter, char** first, char** second)
 {
     if (**first != token) {
         for (int exit_anticipatorily = 0;
@@ -36,14 +37,15 @@ bool is_sign(char token, int* circumflex_counter, char** first, char** second)
     return true;
 }
 
-bool add_word_length(int* circumflex_counter, char** first, char** second)
+static bool
+add_word_length(int* circumflex_counter, char** first, char** second)
 {
     *circumflex_counter = *circumflex_counter + (*second - *first);
     *first = *second;
     return true;
 }
 
-bool is_number(int* circumflex_counter, char** first)
+static bool is_number(int* circumflex_counter, char** first)
 {
     if (isdigit(**first) == 0) {
         for (int exit_anticipatorily = 0;
@@ -59,7 +61,7 @@ bool is_number(int* circumflex_counter, char** first)
     return true;
 }
 
-bool is_EOF(int* circumflex_counter, char** first)
+static bool is_EOF(int* circumflex_counter, char** first)
 {
     if (**first != '\0') {
         for (int exit_anticipatorily = 0;
@@ -74,7 +76,7 @@ bool is_EOF(int* circumflex_counter, char** first)
     return true;
 }
 
-bool is_letter(char** second)
+static bool is_letter(char** second)
 {
     if ((**second >= '\x61') && (**second <= '\x7a')) {
         while (**second != ' ') {
@@ -87,7 +89,7 @@ bool is_letter(char** second)
     return true;
 }
 
-bool to_lower_all_str(char* array)
+static bool to_lower_all_str(char* array)
 {
     for (int i = 0; i < SIZE_OF_ARR; i++) {
         array[i] = tolower(array[i]);
@@ -95,8 +97,17 @@ bool to_lower_all_str(char* array)
     return true;
 }
 
-bool parse_value(
-        double* var, int* circumflex_counter, char*** curs, char*** end)
+bool prepare_input(
+        char* array, int* circumflex_counter, char** first, char** second)
+{
+    to_lower_all_str(array);
+    skip_space(circumflex_counter, first, second);
+    is_letter(second);
+    return true;
+}
+
+static bool
+parse_value(double* var, int* circumflex_counter, char*** curs, char*** end)
 {
     bool error = is_number(circumflex_counter, *curs);
     if (!error)
@@ -121,9 +132,9 @@ bool parse_circle(
         int* circumflex_counter,
         char** curs,
         char** end,
-        unsigned int* record_counter)
+        unsigned int* record_counter,
+        struct Circle* var_circle)
 {
-    struct Circle var_circle;
     bool error = true;
     for (;;) {
         double x, y, radius;
@@ -152,61 +163,40 @@ bool parse_circle(
         skip_space(circumflex_counter, curs, end);
         error = is_EOF(circumflex_counter, curs);
         if (error == true) {
-            var_circle.x[*record_counter] = x;
-            var_circle.y[*record_counter] = y;
-            var_circle.radius[*record_counter] = radius;
+            var_circle->x[*record_counter] = x;
+            var_circle->y[*record_counter] = y;
+            var_circle->radius[*record_counter] = radius;
             printf("The circle has been added successfully!\n");
             printf("Your figure - circle(%.1f %.1f, %.1f)\n",
-                   var_circle.x[*record_counter],
-                   var_circle.y[*record_counter],
-                   var_circle.radius[*record_counter]);
-            *record_counter = *record_counter + 1;
-            printf("perimeter = %lf\n", calculate_perimeter_circle(radius));
-            printf("area = %lf\n", calculate_area_circle(radius));
-            break;
+                   var_circle->x[*record_counter],
+                   var_circle->y[*record_counter],
+                   var_circle->radius[*record_counter]);
+            return true;
         } else {
             printf("The circle has NOT been added !\n");
             break;
         }
     }
-    return true;
+    return false;
 }
 
-double calculate_side(double x1, double y1, double x2, double y2)
+static double calculate_side(double x1, double y1, double x2, double y2)
 {
     return sqrt((pow((x2 - x1), 2)) + (pow((y2 - y1), 2)));
 }
 
 double calculate_perimeter_triangle(
-        struct Triangle var_triangle, int unsigned record_counter)
+        double x1, double y1, double x2, double y2, double x3, double y3)
 {
-    double first_side = calculate_side(
-            var_triangle.x1[record_counter],
-            var_triangle.y1[record_counter],
-            var_triangle.x2[record_counter],
-            var_triangle.y2[record_counter]);
-    double second_side = calculate_side(
-            var_triangle.x2[record_counter],
-            var_triangle.y2[record_counter],
-            var_triangle.x3[record_counter],
-            var_triangle.y3[record_counter]);
-    double third_side = calculate_side(
-            var_triangle.x3[record_counter],
-            var_triangle.y3[record_counter],
-            var_triangle.x1[record_counter],
-            var_triangle.y1[record_counter]);
+    double first_side = calculate_side(x1, y1, x2, y2);
+    double second_side = calculate_side(x2, y2, x3, y3);
+    double third_side = calculate_side(x3, y3, x1, y1);
     return first_side + second_side + third_side;
 }
 
 double calculate_area_triangle(
-        struct Triangle var_triangle, int unsigned record_counter)
+        double x1, double y1, double x2, double y2, double x3, double y3)
 {
-    double x1 = var_triangle.x1[record_counter];
-    double x2 = var_triangle.x2[record_counter];
-    double x3 = var_triangle.x3[record_counter];
-    double y1 = var_triangle.y1[record_counter];
-    double y2 = var_triangle.y2[record_counter];
-    double y3 = var_triangle.y3[record_counter];
     double result = fabs(((x1 - x3) * (y2 - y3) - (x2 - x3) * (y1 - y3)) / 2);
     return result;
 }
@@ -215,9 +205,9 @@ bool parse_triangle(
         int* circumflex_counter,
         char** curs,
         char** end,
-        unsigned int* record_counter)
+        unsigned int* record_counter,
+        struct Triangle* var_triangle)
 {
-    struct Triangle var_triangle;
     bool error = true;
     for (;;) {
         double x1, x2, x3, x4, y1, y2, y3, y4;
@@ -285,35 +275,30 @@ bool parse_triangle(
             break;
         error = is_EOF(circumflex_counter, curs);
         if ((error == true) && (x1 == x4) && (y1 == y4)) {
-            var_triangle.x1[*record_counter] = x1;
-            var_triangle.x2[*record_counter] = x2;
-            var_triangle.x3[*record_counter] = x3;
-            var_triangle.x4[*record_counter] = x4;
-            var_triangle.y1[*record_counter] = y1;
-            var_triangle.y2[*record_counter] = y2;
-            var_triangle.y3[*record_counter] = y3;
-            var_triangle.y4[*record_counter] = y4;
+            var_triangle->x1[*record_counter] = x1;
+            var_triangle->x2[*record_counter] = x2;
+            var_triangle->x3[*record_counter] = x3;
+            var_triangle->x4[*record_counter] = x4;
+            var_triangle->y1[*record_counter] = y1;
+            var_triangle->y2[*record_counter] = y2;
+            var_triangle->y3[*record_counter] = y3;
+            var_triangle->y4[*record_counter] = y4;
             printf("The triangle has been added successfully!\n");
             printf("Your figure - triangle((%.1f %.1f, %.1f %.1f, %.1f %.1f, "
                    "%.1f %.1f))\n",
-                   var_triangle.x1[*record_counter],
-                   var_triangle.y1[*record_counter],
-                   var_triangle.x2[*record_counter],
-                   var_triangle.y2[*record_counter],
-                   var_triangle.x3[*record_counter],
-                   var_triangle.y3[*record_counter],
-                   var_triangle.x4[*record_counter],
-                   var_triangle.y4[*record_counter]);
-            printf("perimeter = %lf\n",
-                   calculate_perimeter_triangle(var_triangle, *record_counter));
-            printf("area = %lf\n",
-                   calculate_area_triangle(var_triangle, *record_counter));
-            *record_counter = *record_counter + 1;
-            break;
+                   var_triangle->x1[*record_counter],
+                   var_triangle->y1[*record_counter],
+                   var_triangle->x2[*record_counter],
+                   var_triangle->y2[*record_counter],
+                   var_triangle->x3[*record_counter],
+                   var_triangle->y3[*record_counter],
+                   var_triangle->x4[*record_counter],
+                   var_triangle->y4[*record_counter]);
+            return true;
         } else {
             printf("The triangle has NOT been added !\n");
             break;
         }
     }
-    return true;
+    return false;
 }
