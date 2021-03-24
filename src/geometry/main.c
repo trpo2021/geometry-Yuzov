@@ -22,8 +22,7 @@ int main()
         end = str;
         circumflex_counter = 0;
         prepare_input(str, &circumflex_counter, &curs, &end);
-        if (strncmp(curs, "circle", end - curs) == 0) //ПРОВЕРКА НА CIRCLE
-        {
+        if (strncmp(curs, "circle", end - curs) == 0) {
             if (parse_circle(
                         &circumflex_counter,
                         &curs,
@@ -40,9 +39,7 @@ int main()
                 record_counter++;
             }
         } else {
-            if (strncmp(curs, "triangle", end - curs)
-                == 0) //ПРОВЕРКА НА TRIANGLE
-            {
+            if (strncmp(curs, "triangle", end - curs) == 0) {
                 if (parse_triangle(
                             &circumflex_counter,
                             &curs,
