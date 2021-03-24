@@ -25,7 +25,8 @@ struct Triangle {
     double y4[SIZE_OF_ARR];
 };
 
-bool prepare_input(char *array, int *circumflex_counter, char **first, char **second);
+bool prepare_input(
+        char* array, int* circumflex_counter, char** first, char** second);
 bool parse_circle(
         int* circumflex_counter,
         char** curs,
