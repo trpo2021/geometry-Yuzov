@@ -1,4 +1,5 @@
 #pragma once
+#define _USE_MATH_DEFINES
 #include <ctype.h>
 #include <math.h>
 #include <stdbool.h>

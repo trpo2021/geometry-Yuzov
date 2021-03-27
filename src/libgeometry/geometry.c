@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 static bool skip_space(int* circumflex_counter, char** first, char** second)
 {
     while (isspace(**first)) {
