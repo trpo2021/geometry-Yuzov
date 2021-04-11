@@ -80,7 +80,7 @@ static bool is_EOF(int* circumflex_counter, char** first)
 static bool is_letter(char** second)
 {
     if ((**second >= '\x61') && (**second <= '\x7a')) {
-        while (**second != ' ') {
+        while (isalpha(**second) != 0) {
             *second = *second + 1;
         }
     } else {
