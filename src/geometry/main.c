@@ -13,7 +13,8 @@ int main()
     int circumflex_counter;
     char* curs;
     char* end;
-    unsigned int record_counter = 0;
+    unsigned int circle_record_counter = 0;
+    unsigned int triangle_record_counter = 0;
     printf("Enter a circle or triangle in WKT format\n");
     printf("After entering the figures, enter any non-alphabetic character or "
            "press Enter again to complete the entry\n");
@@ -27,16 +28,16 @@ int main()
                         &circumflex_counter,
                         &curs,
                         &end,
-                        &record_counter,
+                        &circle_record_counter,
                         &var_circle)
                 == true) {
                 printf("perimeter = %lf\n",
                        calculate_perimeter_circle(
-                               var_circle.radius[record_counter]));
+                               var_circle.radius[circle_record_counter]));
                 printf("area = %lf\n",
                        calculate_area_circle(
-                               var_circle.radius[record_counter]));
-                record_counter++;
+                               var_circle.radius[circle_record_counter]));
+                circle_record_counter++;
             }
         } else {
             if (strncmp(curs, "triangle", end - curs) == 0) {
@@ -44,26 +45,26 @@ int main()
                             &circumflex_counter,
                             &curs,
                             &end,
-                            &record_counter,
+                            &triangle_record_counter,
                             &var_triangle)
                     == true) {
                     printf("perimeter = %lf\n",
                            calculate_perimeter_triangle(
-                                   var_triangle.x1[record_counter],
-                                   var_triangle.y1[record_counter],
-                                   var_triangle.x2[record_counter],
-                                   var_triangle.y2[record_counter],
-                                   var_triangle.x3[record_counter],
-                                   var_triangle.y3[record_counter]));
+                                   var_triangle.x1[triangle_record_counter],
+                                   var_triangle.y1[triangle_record_counter],
+                                   var_triangle.x2[triangle_record_counter],
+                                   var_triangle.y2[triangle_record_counter],
+                                   var_triangle.x3[triangle_record_counter],
+                                   var_triangle.y3[triangle_record_counter]));
                     printf("area = %lf\n",
                            calculate_area_triangle(
-                                   var_triangle.x1[record_counter],
-                                   var_triangle.y1[record_counter],
-                                   var_triangle.x2[record_counter],
-                                   var_triangle.y2[record_counter],
-                                   var_triangle.x3[record_counter],
-                                   var_triangle.y3[record_counter]));
-                    record_counter++;
+                                   var_triangle.x1[triangle_record_counter],
+                                   var_triangle.y1[triangle_record_counter],
+                                   var_triangle.x2[triangle_record_counter],
+                                   var_triangle.y2[triangle_record_counter],
+                                   var_triangle.x3[triangle_record_counter],
+                                   var_triangle.y3[triangle_record_counter]));
+                    triangle_record_counter++;
                 }
             } else {
                 for (int exit_anticipatorily = 0;
