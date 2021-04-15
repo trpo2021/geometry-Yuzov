@@ -46,3 +46,9 @@ double calculate_perimeter_triangle(
         double x1, double y1, double x2, double y2, double x3, double y3);
 double calculate_area_triangle(
         double x1, double y1, double x2, double y2, double x3, double y3);
+bool is_intersection(
+    unsigned int circle_record_counter,
+    unsigned int triangle_record_counter,
+    struct Circle var_circle,
+    struct Triangle var_triangle,
+    char *figure_name);

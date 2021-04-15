@@ -37,6 +37,12 @@ int main()
                 printf("area = %lf\n",
                        calculate_area_circle(
                                var_circle.radius[circle_record_counter]));
+                is_intersection(
+                        circle_record_counter,
+                        triangle_record_counter,
+                        var_circle,
+                        var_triangle,
+                        "circle");
                 circle_record_counter++;
             }
         } else {
