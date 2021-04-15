@@ -70,6 +70,12 @@ int main()
                                    var_triangle.y2[triangle_record_counter],
                                    var_triangle.x3[triangle_record_counter],
                                    var_triangle.y3[triangle_record_counter]));
+                    is_intersection(
+                            circle_record_counter,
+                            triangle_record_counter,
+                            var_circle,
+                            var_triangle,
+                            "triangle");
                     triangle_record_counter++;
                 }
             } else {

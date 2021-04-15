@@ -48,7 +48,10 @@ add_word_length(int* circumflex_counter, char** first, char** second)
 
 static bool is_number(int* circumflex_counter, char** first)
 {
-    if (isdigit(**first) == 0) {
+    if (**first == '-') {
+        *first = *first + 1;
+    }
+    if ((isdigit(**first) == 0)) {
         for (int exit_anticipatorily = 0;
              exit_anticipatorily < *circumflex_counter;
              exit_anticipatorily++) {
@@ -168,7 +171,7 @@ bool parse_circle(
             var_circle->y[*record_counter] = y;
             var_circle->radius[*record_counter] = radius;
             printf("The circle has been added successfully!\n");
-            printf("Your figure - circle(%.1f %.1f, %.1f)\n",
+            printf("Your figure - circle(%.1lf %.1lf, %.1lf)\n",
                    var_circle->x[*record_counter],
                    var_circle->y[*record_counter],
                    var_circle->radius[*record_counter]);
@@ -279,11 +282,9 @@ bool parse_triangle(
             var_triangle->x1[*record_counter] = x1;
             var_triangle->x2[*record_counter] = x2;
             var_triangle->x3[*record_counter] = x3;
-            var_triangle->x4[*record_counter] = x4;
             var_triangle->y1[*record_counter] = y1;
             var_triangle->y2[*record_counter] = y2;
             var_triangle->y3[*record_counter] = y3;
-            var_triangle->y4[*record_counter] = y4;
             printf("The triangle has been added successfully!\n");
             printf("Your figure - triangle((%.1f %.1f, %.1f %.1f, %.1f %.1f, "
                    "%.1f %.1f))\n",
@@ -293,8 +294,8 @@ bool parse_triangle(
                    var_triangle->y2[*record_counter],
                    var_triangle->x3[*record_counter],
                    var_triangle->y3[*record_counter],
-                   var_triangle->x4[*record_counter],
-                   var_triangle->y4[*record_counter]);
+                   var_triangle->x1[*record_counter],
+                   var_triangle->y1[*record_counter]);
             return true;
         } else {
             printf("The triangle has NOT been added !\n\n");
@@ -302,6 +303,117 @@ bool parse_triangle(
         }
     }
     return false;
+}
+
+static double mult_vectors(double ax, double ay, double bx, double by)
+{
+    return (ax * by - bx * ay);
+}
+
+static void swap_sides(
+        double* x1,
+        double* y1,
+        double* x2,
+        double* y2,
+        double* x3,
+        double* y3,
+        double* x4,
+        double* y4,
+        int point_counter,
+        struct Triangle var_triangle,
+        unsigned int triangle_record_counter,
+        int i)
+{
+    if (point_counter == 1) {
+        *x1 = var_triangle.x1[triangle_record_counter];
+        *y1 = var_triangle.y1[triangle_record_counter];
+        *x2 = var_triangle.x2[triangle_record_counter];
+        *y2 = var_triangle.y2[triangle_record_counter];
+        *x3 = var_triangle.x1[i];
+        *y3 = var_triangle.y1[i];
+        *x4 = var_triangle.x2[i];
+        *y4 = var_triangle.y2[i];
+    }
+    if (point_counter == 2) {
+        *x1 = var_triangle.x1[triangle_record_counter];
+        *y1 = var_triangle.y1[triangle_record_counter];
+        *x2 = var_triangle.x2[triangle_record_counter];
+        *y2 = var_triangle.y2[triangle_record_counter];
+        *x3 = var_triangle.x1[i];
+        *y3 = var_triangle.y1[i];
+        *x4 = var_triangle.x3[i];
+        *y4 = var_triangle.y3[i];
+    }
+    if (point_counter == 3) {
+        *x1 = var_triangle.x1[triangle_record_counter];
+        *y1 = var_triangle.y1[triangle_record_counter];
+        *x2 = var_triangle.x2[triangle_record_counter];
+        *y2 = var_triangle.y2[triangle_record_counter];
+        *x3 = var_triangle.x3[i];
+        *y3 = var_triangle.y3[i];
+        *x4 = var_triangle.x2[i];
+        *y4 = var_triangle.y2[i];
+    }
+    if (point_counter == 4) {
+        *x1 = var_triangle.x1[triangle_record_counter];
+        *y1 = var_triangle.y1[triangle_record_counter];
+        *x2 = var_triangle.x3[triangle_record_counter];
+        *y2 = var_triangle.y3[triangle_record_counter];
+        *x3 = var_triangle.x1[i];
+        *y3 = var_triangle.y1[i];
+        *x4 = var_triangle.x2[i];
+        *y4 = var_triangle.y2[i];
+    }
+    if (point_counter == 5) {
+        *x1 = var_triangle.x1[triangle_record_counter];
+        *y1 = var_triangle.y1[triangle_record_counter];
+        *x2 = var_triangle.x3[triangle_record_counter];
+        *y2 = var_triangle.y3[triangle_record_counter];
+        *x3 = var_triangle.x1[i];
+        *y3 = var_triangle.y1[i];
+        *x4 = var_triangle.x3[i];
+        *y4 = var_triangle.y3[i];
+    }
+    if (point_counter == 6) {
+        *x1 = var_triangle.x1[triangle_record_counter];
+        *y1 = var_triangle.y1[triangle_record_counter];
+        *x2 = var_triangle.x3[triangle_record_counter];
+        *y2 = var_triangle.y3[triangle_record_counter];
+        *x3 = var_triangle.x3[i];
+        *y3 = var_triangle.y3[i];
+        *x4 = var_triangle.x2[i];
+        *y4 = var_triangle.y2[i];
+    }
+    if (point_counter == 7) {
+        *x1 = var_triangle.x3[triangle_record_counter];
+        *y1 = var_triangle.y3[triangle_record_counter];
+        *x2 = var_triangle.x2[triangle_record_counter];
+        *y2 = var_triangle.y2[triangle_record_counter];
+        *x3 = var_triangle.x1[i];
+        *y3 = var_triangle.y1[i];
+        *x4 = var_triangle.x2[i];
+        *y4 = var_triangle.y2[i];
+    }
+    if (point_counter == 8) {
+        *x1 = var_triangle.x3[triangle_record_counter];
+        *y1 = var_triangle.y3[triangle_record_counter];
+        *x2 = var_triangle.x2[triangle_record_counter];
+        *y2 = var_triangle.y2[triangle_record_counter];
+        *x3 = var_triangle.x1[i];
+        *y3 = var_triangle.y1[i];
+        *x4 = var_triangle.x3[i];
+        *y4 = var_triangle.y3[i];
+    }
+    if (point_counter == 9) {
+        *x1 = var_triangle.x3[triangle_record_counter];
+        *y1 = var_triangle.y3[triangle_record_counter];
+        *x2 = var_triangle.x2[triangle_record_counter];
+        *y2 = var_triangle.y2[triangle_record_counter];
+        *x3 = var_triangle.x3[i];
+        *y3 = var_triangle.y3[i];
+        *x4 = var_triangle.x2[i];
+        *y4 = var_triangle.y2[i];
+    }
 }
 
 static void triangle_cross_circle(
@@ -324,6 +436,27 @@ static void triangle_cross_circle(
     *x_2 = (-b - sqrt(discriminant)) / (2 * a);
 }
 
+bool is_lines_cross(
+        double x1,
+        double y1,
+        double x2,
+        double y2,
+        double x3,
+        double y3,
+        double x4,
+        double y4)
+{
+    double v1, v2, v3, v4;
+    v1 = mult_vectors(x4 - x3, y4 - y3, x1 - x3, y1 - y3);
+    v2 = mult_vectors(x4 - x3, y4 - y3, x2 - x3, y2 - y3);
+    v3 = mult_vectors(x2 - x1, y2 - y1, x3 - x1, y3 - y1);
+    v4 = mult_vectors(x2 - x1, y2 - y1, x4 - x1, y4 - y1);
+    if ((v1 * v2 <= 0) && (v3 * v4 <= 0)) {
+        return true;
+    }
+    return false;
+}
+
 bool is_intersection(
         unsigned int circle_record_counter,
         unsigned int triangle_record_counter,
@@ -331,8 +464,7 @@ bool is_intersection(
         struct Triangle var_triangle,
         char* figure_name)
 {
-    double x1, x2, y1, y2, x3, y3, x_1, x_2,
-            radius; // unused a, b, c, discriminant,
+    double x1, x2, y1, y2, x3, y3, x_1, x_2, a, b, c, discriminant, radius;
     int i;
     bool intersects = false;
     int side_counter = 1;
@@ -394,6 +526,71 @@ bool is_intersection(
                            var_triangle.y2[i],
                            var_triangle.x3[i],
                            var_triangle.y3[i]);
+                    intersects = true;
+                }
+            }
+        }
+    }
+    if (strcmp(figure_name, "triangle") == 0) {
+        if (triangle_record_counter > 0) {
+            intersects = false;
+            bool cross;
+            int point_counter = 1;
+            side_counter = 1;
+            double x4, y4;
+            for (i = triangle_record_counter - 1; i != -1; i--) {
+                for (point_counter = 1; point_counter <= 9; point_counter++) {
+                    swap_sides(
+                            &x1,
+                            &y1,
+                            &x2,
+                            &y2,
+                            &x3,
+                            &y3,
+                            &x4,
+                            &y4,
+                            point_counter,
+                            var_triangle,
+                            triangle_record_counter,
+                            i);
+                    cross = is_lines_cross(x1, y1, x2, y2, x3, y3, x4, y4);
+                    if (cross == true) {
+                        if (intersects == false)
+                            printf("intersects:\n");
+                        printf("triangle (( %.1lf %.1lf, %.1lf %.1lf, %.1lf "
+                               "%.1lf ))\n",
+                               var_triangle.x1[i],
+                               var_triangle.y1[i],
+                               var_triangle.x2[i],
+                               var_triangle.y2[i],
+                               var_triangle.x3[i],
+                               var_triangle.y3[i]);
+                        intersects = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (circle_record_counter >= 1) {
+            side_counter = 1;
+            x2 = var_triangle.x2[triangle_record_counter];
+            x1 = var_triangle.x1[triangle_record_counter];
+            y2 = var_triangle.y2[triangle_record_counter];
+            y1 = var_triangle.y1[triangle_record_counter];
+            for (i = circle_record_counter - 1; i != -1; i--) {
+                x3 = var_circle.x[i];
+                y3 = var_circle.y[i];
+                radius = var_circle.radius[i];
+                side_counter++;
+                triangle_cross_circle(
+                        &x_1, &x_2, radius, x1, x2, x3, y1, y2, y3);
+                if ((x_1 < 0) || (x_2 < 0)) {
+                    if (intersects == false)
+                        printf("intersects:\n");
+                    printf("circle ( %.1lf %.1lf , %.1lf )\n",
+                           var_circle.x[i],
+                           var_circle.y[i],
+                           var_circle.radius[i]);
                     intersects = true;
                 }
             }
