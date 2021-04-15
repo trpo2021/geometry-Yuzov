@@ -464,7 +464,7 @@ bool is_intersection(
         struct Triangle var_triangle,
         char* figure_name)
 {
-    double x1, x2, y1, y2, x3, y3, x_1, x_2, a, b, c, discriminant, radius;
+    double x1, x2, y1, y2, x3, y3, x_1, x_2, radius;
     int i;
     bool intersects = false;
     int side_counter = 1;
@@ -558,7 +558,7 @@ bool is_intersection(
                         if (intersects == false)
                             printf("intersects:\n");
                         printf("triangle (( %.1lf %.1lf, %.1lf %.1lf, %.1lf "
-                               "%.1lf ))\n",
+                               "%.1lf ))\n\n",
                                var_triangle.x1[i],
                                var_triangle.y1[i],
                                var_triangle.x2[i],
