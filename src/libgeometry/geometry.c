@@ -121,6 +121,16 @@ double calculate_area_circle(double radius)
     return M_PI * pow(radius, 2);
 }
 
+static bool check_radius(double* radius)
+{
+    if (*radius < 0) {
+        printf("Radius can not be negative\n\n");
+        return false;
+    } else {
+        return true;
+    }
+}
+
 bool parse_circle(
         int* circumflex_counter,
         char** curs,
@@ -148,6 +158,7 @@ bool parse_circle(
             break;
         skip_space(circumflex_counter, curs, end);
         error = parse_value(&radius, circumflex_counter, &curs, &end);
+        error = check_radius(&radius);
         if (!error)
             break;
         error = is_sign(')', circumflex_counter, curs, end);
