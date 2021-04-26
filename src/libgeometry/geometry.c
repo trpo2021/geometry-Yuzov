@@ -113,10 +113,18 @@ bool prepare_input(
 static bool
 parse_value(double* var, int* circumflex_counter, char*** curs, char*** end)
 {
-    bool error = is_number(circumflex_counter, *curs);
-    if (!error)
-        return false;
     *var = strtod(**curs, *end);
+    if ((*var == 0) && (**curs == **end)) {
+        for (int exit_anticipatorily = 0;
+             exit_anticipatorily < *circumflex_counter;
+             exit_anticipatorily++) {
+            printf(" ");
+        }
+        printf("^\n");
+        printf("Error at column %d: expected '<double>'\n",
+               *circumflex_counter);
+        return false;
+    }
     add_word_length(circumflex_counter, *curs, *end);
     skip_space(circumflex_counter, *curs, *end);
     return true;
