@@ -46,25 +46,6 @@ add_word_length(int* circumflex_counter, char** first, char** second)
     return true;
 }
 
-static bool is_number(int* circumflex_counter, char** first)
-{
-    if (**first == '-') {
-        *first = *first + 1;
-    }
-    if ((isdigit(**first) == 0)) {
-        for (int exit_anticipatorily = 0;
-             exit_anticipatorily < *circumflex_counter;
-             exit_anticipatorily++) {
-            printf(" ");
-        }
-        printf("^\n");
-        printf("Error at column %d: expected '<double>'\n\n",
-               *circumflex_counter);
-        return false;
-    }
-    return true;
-}
-
 static bool is_EOF(int* circumflex_counter, char** first)
 {
     if (**first != '\0') {
