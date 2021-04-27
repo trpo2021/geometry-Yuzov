@@ -386,7 +386,7 @@ static void triangle_cross_circle(
     *x_2 = (-b - sqrt(discriminant)) / (2 * a);
 }
 
-bool is_lines_cross(
+static bool is_lines_cross(
         double x1,
         double y1,
         double x2,
