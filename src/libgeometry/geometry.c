@@ -324,95 +324,45 @@ static void swap_sides(
         unsigned int triangle_record_counter,
         int i)
 {
-    if (point_counter == 1) {
-        *x1 = var_triangle.x1[triangle_record_counter];
-        *y1 = var_triangle.y1[triangle_record_counter];
-        *x2 = var_triangle.x2[triangle_record_counter];
-        *y2 = var_triangle.y2[triangle_record_counter];
-        *x3 = var_triangle.x1[i];
-        *y3 = var_triangle.y1[i];
-        *x4 = var_triangle.x2[i];
-        *y4 = var_triangle.y2[i];
+    double xi[] = {var_triangle.x1[i], var_triangle.x2[i], var_triangle.x3[i]};
+    double yi[] = {var_triangle.y1[i], var_triangle.y2[i], var_triangle.y3[i]};
+    double xtrc[]
+            = {var_triangle.x1[triangle_record_counter],
+               var_triangle.x2[triangle_record_counter],
+               var_triangle.x3[triangle_record_counter]};
+    double ytrc[]
+            = {var_triangle.y1[triangle_record_counter],
+               var_triangle.y2[triangle_record_counter],
+               var_triangle.y3[triangle_record_counter]};
+    int k = 0;
+    int g = 1;
+    int h = 0;
+    int l = 1;
+    for (int t = 0; t < point_counter; t++) {
+        if ((t == 3) || (t == 6)) {
+            if (g < 2)
+                g++;
+            else if (k < 1)
+                k++;
+        }
+        *x1 = xtrc[k];
+        *y1 = ytrc[k];
+        *x2 = xtrc[g];
+        *y2 = ytrc[g];
     }
-    if (point_counter == 2) {
-        *x1 = var_triangle.x1[triangle_record_counter];
-        *y1 = var_triangle.y1[triangle_record_counter];
-        *x2 = var_triangle.x2[triangle_record_counter];
-        *y2 = var_triangle.y2[triangle_record_counter];
-        *x3 = var_triangle.x1[i];
-        *y3 = var_triangle.y1[i];
-        *x4 = var_triangle.x3[i];
-        *y4 = var_triangle.y3[i];
-    }
-    if (point_counter == 3) {
-        *x1 = var_triangle.x1[triangle_record_counter];
-        *y1 = var_triangle.y1[triangle_record_counter];
-        *x2 = var_triangle.x2[triangle_record_counter];
-        *y2 = var_triangle.y2[triangle_record_counter];
-        *x3 = var_triangle.x3[i];
-        *y3 = var_triangle.y3[i];
-        *x4 = var_triangle.x2[i];
-        *y4 = var_triangle.y2[i];
-    }
-    if (point_counter == 4) {
-        *x1 = var_triangle.x1[triangle_record_counter];
-        *y1 = var_triangle.y1[triangle_record_counter];
-        *x2 = var_triangle.x3[triangle_record_counter];
-        *y2 = var_triangle.y3[triangle_record_counter];
-        *x3 = var_triangle.x1[i];
-        *y3 = var_triangle.y1[i];
-        *x4 = var_triangle.x2[i];
-        *y4 = var_triangle.y2[i];
-    }
-    if (point_counter == 5) {
-        *x1 = var_triangle.x1[triangle_record_counter];
-        *y1 = var_triangle.y1[triangle_record_counter];
-        *x2 = var_triangle.x3[triangle_record_counter];
-        *y2 = var_triangle.y3[triangle_record_counter];
-        *x3 = var_triangle.x1[i];
-        *y3 = var_triangle.y1[i];
-        *x4 = var_triangle.x3[i];
-        *y4 = var_triangle.y3[i];
-    }
-    if (point_counter == 6) {
-        *x1 = var_triangle.x1[triangle_record_counter];
-        *y1 = var_triangle.y1[triangle_record_counter];
-        *x2 = var_triangle.x3[triangle_record_counter];
-        *y2 = var_triangle.y3[triangle_record_counter];
-        *x3 = var_triangle.x3[i];
-        *y3 = var_triangle.y3[i];
-        *x4 = var_triangle.x2[i];
-        *y4 = var_triangle.y2[i];
-    }
-    if (point_counter == 7) {
-        *x1 = var_triangle.x3[triangle_record_counter];
-        *y1 = var_triangle.y3[triangle_record_counter];
-        *x2 = var_triangle.x2[triangle_record_counter];
-        *y2 = var_triangle.y2[triangle_record_counter];
-        *x3 = var_triangle.x1[i];
-        *y3 = var_triangle.y1[i];
-        *x4 = var_triangle.x2[i];
-        *y4 = var_triangle.y2[i];
-    }
-    if (point_counter == 8) {
-        *x1 = var_triangle.x3[triangle_record_counter];
-        *y1 = var_triangle.y3[triangle_record_counter];
-        *x2 = var_triangle.x2[triangle_record_counter];
-        *y2 = var_triangle.y2[triangle_record_counter];
-        *x3 = var_triangle.x1[i];
-        *y3 = var_triangle.y1[i];
-        *x4 = var_triangle.x3[i];
-        *y4 = var_triangle.y3[i];
-    }
-    if (point_counter == 9) {
-        *x1 = var_triangle.x3[triangle_record_counter];
-        *y1 = var_triangle.y3[triangle_record_counter];
-        *x2 = var_triangle.x2[triangle_record_counter];
-        *y2 = var_triangle.y2[triangle_record_counter];
-        *x3 = var_triangle.x3[i];
-        *y3 = var_triangle.y3[i];
-        *x4 = var_triangle.x2[i];
-        *y4 = var_triangle.y2[i];
+    for (int p = 0; p < point_counter; p++) {
+        if (((p == 3) || (p == 6))) {
+            h = 0;
+            l = 1;
+        }
+        *x3 = xi[h];
+        *y3 = yi[h];
+        *x4 = xi[l];
+        *y4 = yi[l];
+        if (l < 2)
+            l++;
+        else if (h < 1)
+            h++;
     }
 }
 
