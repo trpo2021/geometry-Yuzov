@@ -2,16 +2,13 @@
 #include <libgeometry/geometry.h>
 #include <stdlib.h>
 
-CTEST(arithmetic_suite, simple_sum)
+CTEST(cals_circle, Perimeter)
 {
-    // Given
-    const int a = 1;
-    const int b = 2;
+    double radius = 3;
 
-    // When
-    const int result = sum(a, b);
+    double real = calculate_perimeter_circle(radius);
 
-    // Then
-    const int expected = 3;
-    ASSERT_EQUAL(expected, result);
+    double exp = 18.84956;
+
+    ASSERT_DBL_NEAR(exp, real);
 }
