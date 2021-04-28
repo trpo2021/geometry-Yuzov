@@ -1,4 +1,5 @@
 #pragma once
+#define _USE_MATH_DEFINES
 #include <ctype.h>
 #include <math.h>
 #include <stdbool.h>
@@ -18,11 +19,9 @@ struct Triangle {
     double x1[SIZE_OF_ARR];
     double x2[SIZE_OF_ARR];
     double x3[SIZE_OF_ARR];
-    double x4[SIZE_OF_ARR];
     double y1[SIZE_OF_ARR];
     double y2[SIZE_OF_ARR];
     double y3[SIZE_OF_ARR];
-    double y4[SIZE_OF_ARR];
 };
 
 bool prepare_input(
@@ -45,3 +44,9 @@ double calculate_perimeter_triangle(
         double x1, double y1, double x2, double y2, double x3, double y3);
 double calculate_area_triangle(
         double x1, double y1, double x2, double y2, double x3, double y3);
+bool is_intersection(
+        unsigned int circle_record_counter,
+        unsigned int triangle_record_counter,
+        struct Circle var_circle,
+        struct Triangle var_triangle,
+        char* figure_name);

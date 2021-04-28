@@ -10,3 +10,4 @@ main.c~
 test.c
 #Ignore development environment files
 *.json
+bin/geometry
