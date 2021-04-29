@@ -374,11 +374,17 @@ static void triangle_cross_circle(
 {
     double a = pow((x2 - x1), 2) + pow((y2 - y1), 2);
     double b = 2 * ((x2 - x1) * (x1 - x3) + (y2 - y1) * (y1 - y3));
-    double c = pow(x3, 2) + pow(y3, 2) + x1 * x1 + y1 * y1
+    double c = pow(x3, 2) + pow(y3, 2) + (x1 * x1) + (y1 * y1)
             - 2 * (x3 * x1 + y3 * y1) - pow(radius, 2);
     double discriminant = pow(b, 2) - (4 * a * c);
-    *x_1 = (-b + sqrt(discriminant)) / (2 * a);
-    *x_2 = (-b - sqrt(discriminant)) / (2 * a);
+    if (discriminant > 0) {
+        *x_1 = (-b + sqrt(discriminant)) / (2 * a);
+        *x_2 = (-b - sqrt(discriminant)) / (2 * a);
+    }
+    if (discriminant == 0) {
+        *x_1 = (-b) / (2 * a);
+        *x_2 = 1;
+    }
 }
 
 static bool is_lines_cross(
@@ -409,7 +415,7 @@ bool is_intersection(
         struct Triangle var_triangle,
         char* figure_name)
 {
-    double x1, x2, y1, y2, x3, y3, x_1, x_2, radius;
+    double x1, x2, y1, y2, x3, y3, x_1 = 1, x_2 = 1, radius;
     int i;
     bool intersects = false;
     int side_counter = 1;
@@ -461,7 +467,7 @@ bool is_intersection(
                 side_counter++;
                 triangle_cross_circle(
                         &x_1, &x_2, radius, x1, x2, x3, y1, y2, y3);
-                if ((x_1 < 0) || (x_2 < 0)) {
+                if (((x_1 < 0) || (x_2 < 0)) && ((x_1 <= 1) && (x_2 <= 1))) {
                     if (intersects == false) {
                         intersects = true;
                         printf("intersects:\n");
@@ -532,7 +538,7 @@ bool is_intersection(
                 side_counter++;
                 triangle_cross_circle(
                         &x_1, &x_2, radius, x1, x2, x3, y1, y2, y3);
-                if ((x_1 < 0) || (x_2 < 0)) {
+                if (((x_1 < 0) || (x_2 < 0)) && ((x_1 <= 1) && (x_2 <= 1))) {
                     if (intersects == false) {
                         intersects = true;
                         printf("intersects:\n");

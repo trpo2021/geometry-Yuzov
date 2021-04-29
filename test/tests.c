@@ -272,7 +272,7 @@ CTEST(IntersectTrian, triangles_do_not_intersect)
     ASSERT_EQUAL(exp, real);
 }
 
-CTEST(IntersectTrianAndCircle, Triangle_within_triangle)
+CTEST(IntersectTrianAndCircle, triangle_within_triangle)
 {
     struct Circle var_circle;
     struct Triangle var_triangle;
@@ -285,11 +285,11 @@ CTEST(IntersectTrianAndCircle, Triangle_within_triangle)
     var_triangle.y2[0] = 0;
     var_triangle.y3[0] = 10;
     var_triangle.x1[1] = 1;
-    var_triangle.x2[1] = 9;
+    var_triangle.x2[1] = 6;
     var_triangle.x3[1] = 1;
     var_triangle.y1[1] = 1;
     var_triangle.y2[1] = 1;
-    var_triangle.y3[1] = 9;
+    var_triangle.y3[1] = 6;
 
     bool real = is_intersection(
             circle_record_counter,
@@ -298,7 +298,7 @@ CTEST(IntersectTrianAndCircle, Triangle_within_triangle)
             var_triangle,
             "triangle");
 
-    bool exp = true;
+    bool exp = false;
 
     ASSERT_EQUAL(exp, real);
 }
@@ -326,7 +326,7 @@ CTEST(IntersectTrianAndCircle, circle_in_triangle)
             var_triangle,
             "triangle");
 
-    bool exp = true;
+    bool exp = false;
 
     ASSERT_EQUAL(exp, real);
 }
@@ -335,26 +335,26 @@ CTEST(IntersectTrianAndCircle, triangle_in_circle)
 {
     struct Circle var_circle;
     struct Triangle var_triangle;
-    unsigned int circle_record_counter = 1;
-    unsigned int triangle_record_counter = 0;
+    unsigned int circle_record_counter = 0;
+    unsigned int triangle_record_counter = 1;
     var_triangle.x1[0] = 0;
     var_triangle.x2[0] = 10;
     var_triangle.x3[0] = 0;
     var_triangle.y1[0] = 0;
     var_triangle.y2[0] = 0;
     var_triangle.y3[0] = 10;
-    var_circle.x[0] = 3;
-    var_circle.y[0] = 3;
-    var_circle.radius[0] = 1000000;
+    var_circle.x[0] = 0;
+    var_circle.y[0] = 0;
+    var_circle.radius[0] = 100;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "circle");
 
-    bool exp = true;
+    bool exp = false;
 
     ASSERT_EQUAL(exp, real);
 }
@@ -373,7 +373,7 @@ CTEST(IntersectTrianAndCircle, intersection_at_multiple_points)
     var_triangle.y3[0] = 10;
     var_circle.x[0] = 1;
     var_circle.y[0] = 1;
-    var_circle.radius[0] = 1;
+    var_circle.radius[0] = 2;
 
     bool real = is_intersection(
             circle_record_counter,
