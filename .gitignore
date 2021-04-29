@@ -13,3 +13,4 @@ test.c
 bin/geometry
 bin/geometry_test
 
+bin/geometry_test.exe
