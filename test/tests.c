@@ -55,7 +55,7 @@ CTEST(InputPrep, lowercase)
 
     bool real = prepare_input(str, &circumflex_counter, &curs, &end);
 
-    bool exp = true;
+    bool exp = false;
 
     ASSERT_EQUAL(exp, real);
 }
