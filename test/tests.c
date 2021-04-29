@@ -50,12 +50,12 @@ CTEST(InputPrep, lowercase)
 {
     char str[256] = "TRIANGLE";
     int circumflex_counter = 0;
-    char* curs = str;
-    char* end = str;
+    char *curs = str;
+    char *end = str;
 
     bool real = prepare_input(str, &circumflex_counter, &curs, &end);
 
-    bool exp = false;
+    bool exp = true;
 
     ASSERT_EQUAL(exp, real);
 }
@@ -64,8 +64,8 @@ CTEST(InputPrep, completion_of_input)
 {
     char str[256] = {'\0'};
     int circumflex_counter = 0;
-    char* curs = str;
-    char* end = str;
+    char *curs = str;
+    char *end = str;
 
     bool real = prepare_input(str, &circumflex_counter, &curs, &end);
 
@@ -87,11 +87,11 @@ CTEST(IntersectCirc, one_in_the_other)
     var_circle.y[1] = 0;
     var_circle.radius[1] = 5;
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "circle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "circle");
 
     bool exp = true;
 
@@ -112,11 +112,11 @@ CTEST(IntersectCirc, one_crosses_the_other)
     var_circle.radius[1] = 1;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "circle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "circle");
 
     bool exp = true;
 
@@ -137,11 +137,11 @@ CTEST(IntersectCirc, one_doesnot_crosses_the_other)
     var_circle.radius[1] = 1;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "circle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "circle");
 
     bool exp = false;
 
@@ -168,11 +168,11 @@ CTEST(IntersectTrian, one_side_coincides_with_the_other)
     var_triangle.y3[1] = -10;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "triangle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "triangle");
 
     bool exp = true;
 
@@ -199,11 +199,11 @@ CTEST(IntersectTrian, common_vertex)
     var_triangle.y3[1] = -10;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "triangle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "triangle");
 
     bool exp = true;
 
@@ -230,11 +230,11 @@ CTEST(IntersectTrian, intersection_at_multiple_points)
     var_triangle.y3[1] = 13;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "triangle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "triangle");
 
     bool exp = true;
 
@@ -261,11 +261,11 @@ CTEST(IntersectTrian, triangles_do_not_intersect)
     var_triangle.y3[1] = 130;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "triangle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "triangle");
 
     bool exp = false;
 
@@ -292,11 +292,11 @@ CTEST(IntersectTrianAndCircle, triangle_within_triangle)
     var_triangle.y3[1] = 6;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "triangle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "triangle");
 
     bool exp = false;
 
@@ -320,11 +320,11 @@ CTEST(IntersectTrianAndCircle, circle_in_triangle)
     var_circle.radius[0] = 1;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "triangle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "triangle");
 
     bool exp = false;
 
@@ -348,11 +348,11 @@ CTEST(IntersectTrianAndCircle, triangle_in_circle)
     var_circle.radius[0] = 100;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "circle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "circle");
 
     bool exp = false;
 
@@ -376,11 +376,11 @@ CTEST(IntersectTrianAndCircle, intersection_at_multiple_points)
     var_circle.radius[0] = 2;
 
     bool real = is_intersection(
-            circle_record_counter,
-            triangle_record_counter,
-            var_circle,
-            var_triangle,
-            "triangle");
+        circle_record_counter,
+        triangle_record_counter,
+        var_circle,
+        var_triangle,
+        "triangle");
 
     bool exp = true;
 
@@ -392,16 +392,16 @@ CTEST(ParseCircle, aright)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   ( -1 2 , 0.4)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = 0;
 
@@ -413,16 +413,16 @@ CTEST(ParseCircle, character_before_parenthesis)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   с( -1 2 , 0.4)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -1;
 
@@ -434,16 +434,16 @@ CTEST(ParseCircle, not_a_number_after_the_parenthesis)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   (с -1 2 , 0.4)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -2;
 
@@ -455,16 +455,16 @@ CTEST(ParseCircle, not_a_number_after_the_first_number)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   ( -1 с2 , 0.4)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -3;
 
@@ -476,16 +476,16 @@ CTEST(ParseCircle, not_a_comma_after_the_second_number)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   ( -1 2 c, 0.4)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -4;
 
@@ -497,16 +497,16 @@ CTEST(ParseCircle, not_a_number_after_the_comma)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   ( -1 2 , c0.4)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -5;
 
@@ -518,16 +518,16 @@ CTEST(ParseCircle, negative_radius)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   ( -1 2 , -0.4)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -6;
 
@@ -539,16 +539,16 @@ CTEST(ParseCircle, not_a_parenthesis_after_the_radius)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   ( -1 2 , 0.4c)"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -7;
 
@@ -560,16 +560,16 @@ CTEST(ParseCircle, input_after_parenthesis)
     struct Circle var_circle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"circle   ( -1 2 , 0.4)  c"};
-    char* curs = str;
-    char* end = str + 6;
+    char *curs = str;
+    char *end = str + 6;
     unsigned int circle_record_counter = 0;
 
     int real = parse_circle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &circle_record_counter,
-            &var_circle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &circle_record_counter,
+        &var_circle);
 
     int exp = -8;
 
@@ -581,16 +581,16 @@ CTEST(ParseTriangle, alright)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle ( ( 1 1, 1 6, 6 1, 1 1)  )"};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = 0;
 
@@ -602,16 +602,16 @@ CTEST(ParseTriangle, character_before_parenthesis)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle c( ( 1 1, 1 6, 6 1, 1 1)  )"};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = -1;
 
@@ -623,16 +623,16 @@ CTEST(ParseTriangle, character_before_Xnumber)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle ( ( c1 1, 1 6, 6 1, 1 1)  )"};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = -2;
 
@@ -644,16 +644,16 @@ CTEST(ParseTriangle, character_before_Ynumber)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle ( ( 1 c1, 1 6, 6 1, 1 1)  )"};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = -3;
 
@@ -665,16 +665,16 @@ CTEST(ParseTriangle, character_before_comma)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle ( ( 1 1c, 1 6, 6 1, 1 1)  )"};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = -4;
 
@@ -686,16 +686,16 @@ CTEST(ParseTriangle, character_before_parenth)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle ( ( 1 1, 1 6, 6 1, 1 1 с)  )"};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = -5;
 
@@ -707,16 +707,16 @@ CTEST(ParseTriangle, input_after_parenthesis)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle ( ( 1 1, 1 6, 6 1, 1 1)  )  с"};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = -6;
 
@@ -728,16 +728,16 @@ CTEST(ParseTriangle, mismatch_of_beginning_and_end)
     struct Triangle var_triangle;
     int circumflex_counter = 0;
     char str[SIZE_OF_ARR] = {"triangle ( ( 1 1, 1 6, 6 1, 9 12)  )  "};
-    char* curs = str;
-    char* end = str + 8;
+    char *curs = str;
+    char *end = str + 8;
     unsigned int triangle_record_counter = 0;
 
     int real = parse_triangle(
-            &circumflex_counter,
-            &curs,
-            &end,
-            &triangle_record_counter,
-            &var_triangle);
+        &circumflex_counter,
+        &curs,
+        &end,
+        &triangle_record_counter,
+        &var_triangle);
 
     int exp = -7;
 
