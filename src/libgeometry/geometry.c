@@ -69,7 +69,7 @@ static bool is_letter(char** second)
         }
     } else {
         printf("Input completed\n");
-        exit(0);
+        return false;
     }
     return true;
 }
@@ -85,10 +85,14 @@ static bool to_lower_all_str(char* array)
 bool prepare_input(
         char* array, int* circumflex_counter, char** first, char** second)
 {
-    to_lower_all_str(array);
-    skip_space(circumflex_counter, first, second);
-    is_letter(second);
-    return true;
+    bool res1, res2, res3;
+    res1 = to_lower_all_str(array);
+    res2 = skip_space(circumflex_counter, first, second);
+    res3 = is_letter(second);
+    if ((res1 && res2 && res3) == true)
+        return true;
+    else
+        return false;
 }
 
 static bool
@@ -131,7 +135,7 @@ static bool check_radius(double* radius)
     }
 }
 
-bool parse_circle(
+int parse_circle(
         int* circumflex_counter,
         char** curs,
         char** end,
@@ -145,25 +149,27 @@ bool parse_circle(
         skip_space(circumflex_counter, curs, end);
         error = is_sign('(', circumflex_counter, curs, end);
         if (!error)
-            break;
+            return -1;
         skip_space(circumflex_counter, curs, end);
         error = parse_value(&x, circumflex_counter, &curs, &end);
         if (!error)
-            break;
+            return -2;
         error = parse_value(&y, circumflex_counter, &curs, &end);
         if (!error)
-            break;
+            return -3;
         error = is_sign(',', circumflex_counter, curs, end);
         if (!error)
-            break;
+            return -4;
         skip_space(circumflex_counter, curs, end);
         error = parse_value(&radius, circumflex_counter, &curs, &end);
+        if (!error)
+            return -5;
         error = check_radius(&radius);
         if (!error)
-            break;
+            return -6;
         error = is_sign(')', circumflex_counter, curs, end);
         if (!error)
-            break;
+            return -7;
         skip_space(circumflex_counter, curs, end);
         error = is_EOF(circumflex_counter, curs);
         if (error == true) {
@@ -175,13 +181,12 @@ bool parse_circle(
                    var_circle->x[*record_counter],
                    var_circle->y[*record_counter],
                    var_circle->radius[*record_counter]);
-            return true;
+            return 0;
         } else {
             printf("The circle has NOT been added !\n\n");
-            break;
+            return -8;
         }
     }
-    return false;
 }
 
 static double calculate_side(double x1, double y1, double x2, double y2)
@@ -205,7 +210,7 @@ double calculate_area_triangle(
     return result;
 }
 
-bool parse_triangle(
+int parse_triangle(
         int* circumflex_counter,
         char** curs,
         char** end,
@@ -215,35 +220,28 @@ bool parse_triangle(
     bool error = true;
     for (;;) {
         double x1, x2, x3, x4, y1, y2, y3, y4;
-        bool exit_anticipatorily = false;
         add_word_length(circumflex_counter, curs, end);
         skip_space(circumflex_counter, curs, end);
         for (int i = 0; i < 2; i++) {
             error = is_sign('(', circumflex_counter, curs, end);
             if (!error) {
-                exit_anticipatorily = true;
-                break;
+                return -1;
             }
             skip_space(circumflex_counter, curs, end);
         }
-        if (exit_anticipatorily == true)
-            break;
         for (int i = 0; i < 3; i++) {
             double varx, vary;
             error = parse_value(&varx, circumflex_counter, &curs, &end);
             if (!error) {
-                exit_anticipatorily = true;
-                break;
+                return -1;
             }
             error = parse_value(&vary, circumflex_counter, &curs, &end);
             if (!error) {
-                exit_anticipatorily = true;
-                break;
+                return -1;
             }
             error = is_sign(',', circumflex_counter, curs, end);
             if (!error) {
-                exit_anticipatorily = true;
-                break;
+                return -1;
             }
             if (i == 0) {
                 x1 = varx;
@@ -259,24 +257,19 @@ bool parse_triangle(
             }
             skip_space(circumflex_counter, curs, end);
         }
-        if (exit_anticipatorily == true)
-            break;
         error = parse_value(&x4, circumflex_counter, &curs, &end);
         if (!error)
-            break;
+            return -1;
         error = parse_value(&y4, circumflex_counter, &curs, &end);
         if (!error)
-            break;
+            return -1;
         for (int i = 0; i < 2; i++) {
             error = is_sign(')', circumflex_counter, curs, end);
             if (!error) {
-                exit_anticipatorily = true;
-                break;
+                return -1;
             }
             skip_space(circumflex_counter, curs, end);
         }
-        if (exit_anticipatorily == true)
-            break;
         error = is_EOF(circumflex_counter, curs);
         if ((error == true) && (x1 == x4) && (y1 == y4)) {
             var_triangle->x1[*record_counter] = x1;
@@ -296,10 +289,10 @@ bool parse_triangle(
                    var_triangle->y3[*record_counter],
                    var_triangle->x1[*record_counter],
                    var_triangle->y1[*record_counter]);
-            return true;
+            return 0;
         } else {
             printf("The triangle has NOT been added !\n\n");
-            break;
+            return -1;
         }
     }
     return false;
@@ -428,13 +421,14 @@ bool is_intersection(
                             var_circle.y[circle_record_counter],
                             var_circle.x[i],
                             var_circle.y[i])) {
-                    if (intersects == false)
+                    if (intersects == false) {
+                        intersects = true;
                         printf("intersects:\n");
+                    }
                     printf("    circle( %.1lf %.1lf , %.1lf )\n\n",
                            var_circle.x[i],
                            var_circle.y[i],
                            var_circle.radius[i]);
-                    intersects = true;
                 }
             }
         }
@@ -466,8 +460,10 @@ bool is_intersection(
                 triangle_cross_circle(
                         &x_1, &x_2, radius, x1, x2, x3, y1, y2, y3);
                 if ((x_1 < 0) || (x_2 < 0)) {
-                    if (intersects == false)
+                    if (intersects == false) {
+                        intersects = true;
                         printf("intersects:\n");
+                    }
                     printf("triangle (( %.1lf %.1lf, %.1lf %.1lf, %.1lf %.1lf "
                            "))\n\n",
                            var_triangle.x1[i],
@@ -476,7 +472,6 @@ bool is_intersection(
                            var_triangle.y2[i],
                            var_triangle.x3[i],
                            var_triangle.y3[i]);
-                    intersects = true;
                 }
             }
         }
@@ -505,8 +500,10 @@ bool is_intersection(
                             i);
                     cross = is_lines_cross(x1, y1, x2, y2, x3, y3, x4, y4);
                     if (cross == true) {
-                        if (intersects == false)
+                        if (intersects == false) {
+                            intersects = true;
                             printf("intersects:\n");
+                        }
                         printf("triangle (( %.1lf %.1lf, %.1lf %.1lf, %.1lf "
                                "%.1lf ))\n\n",
                                var_triangle.x1[i],
@@ -515,7 +512,6 @@ bool is_intersection(
                                var_triangle.y2[i],
                                var_triangle.x3[i],
                                var_triangle.y3[i]);
-                        intersects = true;
                         break;
                     }
                 }
@@ -535,16 +531,20 @@ bool is_intersection(
                 triangle_cross_circle(
                         &x_1, &x_2, radius, x1, x2, x3, y1, y2, y3);
                 if ((x_1 < 0) || (x_2 < 0)) {
-                    if (intersects == false)
+                    if (intersects == false) {
+                        intersects = true;
                         printf("intersects:\n");
+                    }
                     printf("circle ( %.1lf %.1lf , %.1lf )\n",
                            var_circle.x[i],
                            var_circle.y[i],
                            var_circle.radius[i]);
-                    intersects = true;
                 }
             }
         }
     }
-    return true;
+    if (intersects == true)
+        return true;
+    else
+        return false;
 }

@@ -22,7 +22,10 @@ int main()
         curs = str;
         end = str;
         circumflex_counter = 0;
-        prepare_input(str, &circumflex_counter, &curs, &end);
+        bool end_of_input
+                = prepare_input(str, &circumflex_counter, &curs, &end);
+        if (end_of_input == false)
+            exit(0);
         if (strncmp(curs, "circle", end - curs) == 0) {
             if (parse_circle(
                         &circumflex_counter,
@@ -30,7 +33,7 @@ int main()
                         &end,
                         &circle_record_counter,
                         &var_circle)
-                == true) {
+                == 0) {
                 printf("perimeter = %lf\n",
                        calculate_perimeter_circle(
                                var_circle.radius[circle_record_counter]));
@@ -53,7 +56,7 @@ int main()
                             &end,
                             &triangle_record_counter,
                             &var_triangle)
-                    == true) {
+                    == 0) {
                     printf("perimeter = %lf\n",
                            calculate_perimeter_triangle(
                                    var_triangle.x1[triangle_record_counter],

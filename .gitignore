@@ -11,3 +11,5 @@ test.c
 #Ignore development environment files
 *.json
 bin/geometry
+bin/geometry_test
+

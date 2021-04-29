@@ -26,13 +26,13 @@ struct Triangle {
 
 bool prepare_input(
         char* array, int* circumflex_counter, char** first, char** second);
-bool parse_circle(
+int parse_circle(
         int* circumflex_counter,
         char** curs,
         char** end,
         unsigned int* record_counter,
         struct Circle* var_circle);
-bool parse_triangle(
+int parse_triangle(
         int* circumflex_counter,
         char** curs,
         char** end,
