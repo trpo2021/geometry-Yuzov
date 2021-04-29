@@ -233,15 +233,15 @@ int parse_triangle(
             double varx, vary;
             error = parse_value(&varx, circumflex_counter, &curs, &end);
             if (!error) {
-                return -1;
+                return -2;
             }
             error = parse_value(&vary, circumflex_counter, &curs, &end);
             if (!error) {
-                return -1;
+                return -3;
             }
             error = is_sign(',', circumflex_counter, curs, end);
             if (!error) {
-                return -1;
+                return -4;
             }
             if (i == 0) {
                 x1 = varx;
@@ -259,18 +259,21 @@ int parse_triangle(
         }
         error = parse_value(&x4, circumflex_counter, &curs, &end);
         if (!error)
-            return -1;
+            return -2;
         error = parse_value(&y4, circumflex_counter, &curs, &end);
         if (!error)
-            return -1;
+            return -3;
         for (int i = 0; i < 2; i++) {
             error = is_sign(')', circumflex_counter, curs, end);
             if (!error) {
-                return -1;
+                return -5;
             }
             skip_space(circumflex_counter, curs, end);
         }
         error = is_EOF(circumflex_counter, curs);
+        if (!error) {
+            return -6;
+        }
         if ((error == true) && (x1 == x4) && (y1 == y4)) {
             var_triangle->x1[*record_counter] = x1;
             var_triangle->x2[*record_counter] = x2;
@@ -292,10 +295,9 @@ int parse_triangle(
             return 0;
         } else {
             printf("The triangle has NOT been added !\n\n");
-            return -1;
+            return -7;
         }
     }
-    return false;
 }
 
 static double mult_vectors(double ax, double ay, double bx, double by)

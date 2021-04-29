@@ -596,3 +596,150 @@ CTEST(ParseTriangle, alright)
 
     ASSERT_EQUAL(exp, real);
 }
+
+CTEST(ParseTriangle, character_before_parenthesis)
+{
+    struct Triangle var_triangle;
+    int circumflex_counter = 0;
+    char str[SIZE_OF_ARR] = {"triangle c( ( 1 1, 1 6, 6 1, 1 1)  )"};
+    char* curs = str;
+    char* end = str + 8;
+    unsigned int triangle_record_counter = 0;
+
+    int real = parse_triangle(
+            &circumflex_counter,
+            &curs,
+            &end,
+            &triangle_record_counter,
+            &var_triangle);
+
+    int exp = -1;
+
+    ASSERT_EQUAL(exp, real);
+}
+
+CTEST(ParseTriangle, character_before_Xnumber)
+{
+    struct Triangle var_triangle;
+    int circumflex_counter = 0;
+    char str[SIZE_OF_ARR] = {"triangle ( ( c1 1, 1 6, 6 1, 1 1)  )"};
+    char* curs = str;
+    char* end = str + 8;
+    unsigned int triangle_record_counter = 0;
+
+    int real = parse_triangle(
+            &circumflex_counter,
+            &curs,
+            &end,
+            &triangle_record_counter,
+            &var_triangle);
+
+    int exp = -2;
+
+    ASSERT_EQUAL(exp, real);
+}
+
+CTEST(ParseTriangle, character_before_Ynumber)
+{
+    struct Triangle var_triangle;
+    int circumflex_counter = 0;
+    char str[SIZE_OF_ARR] = {"triangle ( ( 1 c1, 1 6, 6 1, 1 1)  )"};
+    char* curs = str;
+    char* end = str + 8;
+    unsigned int triangle_record_counter = 0;
+
+    int real = parse_triangle(
+            &circumflex_counter,
+            &curs,
+            &end,
+            &triangle_record_counter,
+            &var_triangle);
+
+    int exp = -3;
+
+    ASSERT_EQUAL(exp, real);
+}
+
+CTEST(ParseTriangle, character_before_comma)
+{
+    struct Triangle var_triangle;
+    int circumflex_counter = 0;
+    char str[SIZE_OF_ARR] = {"triangle ( ( 1 1c, 1 6, 6 1, 1 1)  )"};
+    char* curs = str;
+    char* end = str + 8;
+    unsigned int triangle_record_counter = 0;
+
+    int real = parse_triangle(
+            &circumflex_counter,
+            &curs,
+            &end,
+            &triangle_record_counter,
+            &var_triangle);
+
+    int exp = -4;
+
+    ASSERT_EQUAL(exp, real);
+}
+
+CTEST(ParseTriangle, character_before_parenth)
+{
+    struct Triangle var_triangle;
+    int circumflex_counter = 0;
+    char str[SIZE_OF_ARR] = {"triangle ( ( 1 1, 1 6, 6 1, 1 1 с)  )"};
+    char* curs = str;
+    char* end = str + 8;
+    unsigned int triangle_record_counter = 0;
+
+    int real = parse_triangle(
+            &circumflex_counter,
+            &curs,
+            &end,
+            &triangle_record_counter,
+            &var_triangle);
+
+    int exp = -5;
+
+    ASSERT_EQUAL(exp, real);
+}
+
+CTEST(ParseTriangle, input_after_parenthesis)
+{
+    struct Triangle var_triangle;
+    int circumflex_counter = 0;
+    char str[SIZE_OF_ARR] = {"triangle ( ( 1 1, 1 6, 6 1, 1 1)  )  с"};
+    char* curs = str;
+    char* end = str + 8;
+    unsigned int triangle_record_counter = 0;
+
+    int real = parse_triangle(
+            &circumflex_counter,
+            &curs,
+            &end,
+            &triangle_record_counter,
+            &var_triangle);
+
+    int exp = -6;
+
+    ASSERT_EQUAL(exp, real);
+}
+
+CTEST(ParseTriangle, mismatch_of_beginning_and_end)
+{
+    struct Triangle var_triangle;
+    int circumflex_counter = 0;
+    char str[SIZE_OF_ARR] = {"triangle ( ( 1 1, 1 6, 6 1, 9 12)  )  "};
+    char* curs = str;
+    char* end = str + 8;
+    unsigned int triangle_record_counter = 0;
+
+    int real = parse_triangle(
+            &circumflex_counter,
+            &curs,
+            &end,
+            &triangle_record_counter,
+            &var_triangle);
+
+    int exp = -7;
+
+    ASSERT_EQUAL(exp, real);
+}
