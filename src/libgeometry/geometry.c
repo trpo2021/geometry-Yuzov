@@ -20,15 +20,6 @@ static bool
 is_sign(char token, int* circumflex_counter, char** first, char** second)
 {
     if (**first != token) {
-        for (int exit_anticipatorily = 0;
-             exit_anticipatorily < *circumflex_counter;
-             exit_anticipatorily++) {
-            printf(" ");
-        }
-        printf("^\n");
-        printf("Error at column %d: expected '%c'\n\n",
-               *circumflex_counter,
-               token);
         return false;
     } else {
         *first = *first + 1;
@@ -46,16 +37,9 @@ add_word_length(int* circumflex_counter, char** first, char** second)
     return true;
 }
 
-static bool is_EOF(int* circumflex_counter, char** first)
+static bool is_EOF(char** first)
 {
     if (**first != '\0') {
-        for (int exit_anticipatorily = 0;
-             exit_anticipatorily < *circumflex_counter;
-             exit_anticipatorily++) {
-            printf(" ");
-        }
-        printf("^\n");
-        printf("unexpected token\n\n");
         return false;
     }
     return true;
@@ -68,7 +52,6 @@ static bool is_letter(char** second)
             *second = *second + 1;
         }
     } else {
-        printf("Input completed\n");
         return false;
     }
     return true;
@@ -100,14 +83,6 @@ parse_value(double* var, int* circumflex_counter, char*** curs, char*** end)
 {
     *var = strtod(**curs, *end);
     if ((*var == 0) && (**curs == **end)) {
-        for (int exit_anticipatorily = 0;
-             exit_anticipatorily < *circumflex_counter;
-             exit_anticipatorily++) {
-            printf(" ");
-        }
-        printf("^\n");
-        printf("Error at column %d: expected '<double>'\n",
-               *circumflex_counter);
         return false;
     }
     add_word_length(circumflex_counter, *curs, *end);
@@ -128,7 +103,6 @@ double calculate_area_circle(double radius)
 static bool check_radius(double* radius)
 {
     if (*radius < 0) {
-        printf("Radius can not be negative\n\n");
         return false;
     } else {
         return true;
@@ -171,19 +145,13 @@ int parse_circle(
         if (!error)
             return -7;
         skip_space(circumflex_counter, curs, end);
-        error = is_EOF(circumflex_counter, curs);
+        error = is_EOF(curs);
         if (error == true) {
             var_circle->x[*record_counter] = x;
             var_circle->y[*record_counter] = y;
             var_circle->radius[*record_counter] = radius;
-            printf("The circle has been added successfully!\n");
-            printf("Your figure - circle(%.1lf %.1lf, %.1lf)\n",
-                   var_circle->x[*record_counter],
-                   var_circle->y[*record_counter],
-                   var_circle->radius[*record_counter]);
             return 0;
         } else {
-            printf("The circle has NOT been added !\n\n");
             return -8;
         }
     }
@@ -270,7 +238,7 @@ int parse_triangle(
             }
             skip_space(circumflex_counter, curs, end);
         }
-        error = is_EOF(circumflex_counter, curs);
+        error = is_EOF(curs);
         if (!error) {
             return -6;
         }
@@ -281,20 +249,8 @@ int parse_triangle(
             var_triangle->y1[*record_counter] = y1;
             var_triangle->y2[*record_counter] = y2;
             var_triangle->y3[*record_counter] = y3;
-            printf("The triangle has been added successfully!\n");
-            printf("Your figure - triangle((%.1f %.1f, %.1f %.1f, %.1f %.1f, "
-                   "%.1f %.1f))\n",
-                   var_triangle->x1[*record_counter],
-                   var_triangle->y1[*record_counter],
-                   var_triangle->x2[*record_counter],
-                   var_triangle->y2[*record_counter],
-                   var_triangle->x3[*record_counter],
-                   var_triangle->y3[*record_counter],
-                   var_triangle->x1[*record_counter],
-                   var_triangle->y1[*record_counter]);
             return 0;
         } else {
-            printf("The triangle has NOT been added !\n\n");
             return -7;
         }
     }
@@ -413,7 +369,11 @@ bool is_intersection(
         unsigned int triangle_record_counter,
         struct Circle var_circle,
         struct Triangle var_triangle,
-        char* figure_name)
+        char* figure_name,
+        int* ind_cir,
+        int* ind_tri,
+        int* j,
+        int* g)
 {
     double x1, x2, y1, y2, x3, y3, x_1 = 1, x_2 = 1, radius;
     int i;
@@ -421,6 +381,7 @@ bool is_intersection(
     int side_counter = 1;
     if (strcmp(figure_name, "circle") == 0) {
         if (circle_record_counter > 0) {
+            *j = 0;
             for (i = circle_record_counter - 1; i != -1; i--) {
                 if ((var_circle.radius[circle_record_counter]
                      + var_circle.radius[i])
@@ -429,20 +390,16 @@ bool is_intersection(
                             var_circle.y[circle_record_counter],
                             var_circle.x[i],
                             var_circle.y[i])) {
-                    if (intersects == false) {
-                        intersects = true;
-                        printf("intersects:\n");
-                    }
-                    printf("    circle( %.1lf %.1lf , %.1lf )\n\n",
-                           var_circle.x[i],
-                           var_circle.y[i],
-                           var_circle.radius[i]);
+                    ind_cir[*j] = i;
+                    *j = *j + 1;
+                    intersects = true;
                 }
             }
         }
         if (triangle_record_counter >= 1) {
             radius = var_circle.radius[circle_record_counter];
             side_counter = 1;
+            *g = 0;
             for (i = triangle_record_counter - 1; i != -1; i--) {
                 if (side_counter == 1) {
                     x2 = var_triangle.x2[i];
@@ -468,18 +425,9 @@ bool is_intersection(
                 triangle_cross_circle(
                         &x_1, &x_2, radius, x1, x2, x3, y1, y2, y3);
                 if (((x_1 < 0) || (x_2 < 0)) && ((x_1 <= 1) && (x_2 <= 1))) {
-                    if (intersects == false) {
-                        intersects = true;
-                        printf("intersects:\n");
-                    }
-                    printf("triangle (( %.1lf %.1lf, %.1lf %.1lf, %.1lf %.1lf "
-                           "))\n\n",
-                           var_triangle.x1[i],
-                           var_triangle.y1[i],
-                           var_triangle.x2[i],
-                           var_triangle.y2[i],
-                           var_triangle.x3[i],
-                           var_triangle.y3[i]);
+                    ind_tri[*g] = i;
+                    *g = *g + 1;
+                    intersects = true;
                 }
             }
         }
@@ -491,6 +439,7 @@ bool is_intersection(
             int point_counter = 1;
             side_counter = 1;
             double x4, y4;
+            *g = 0;
             for (i = triangle_record_counter - 1; i != -1; i--) {
                 for (point_counter = 1; point_counter <= 9; point_counter++) {
                     swap_sides(
@@ -508,18 +457,9 @@ bool is_intersection(
                             i);
                     cross = is_lines_cross(x1, y1, x2, y2, x3, y3, x4, y4);
                     if (cross == true) {
-                        if (intersects == false) {
-                            intersects = true;
-                            printf("intersects:\n");
-                        }
-                        printf("triangle (( %.1lf %.1lf, %.1lf %.1lf, %.1lf "
-                               "%.1lf ))\n\n",
-                               var_triangle.x1[i],
-                               var_triangle.y1[i],
-                               var_triangle.x2[i],
-                               var_triangle.y2[i],
-                               var_triangle.x3[i],
-                               var_triangle.y3[i]);
+                        ind_tri[*g] = i;
+                        *g = *g + 1;
+                        intersects = true;
                         break;
                     }
                 }
@@ -531,6 +471,7 @@ bool is_intersection(
             x1 = var_triangle.x1[triangle_record_counter];
             y2 = var_triangle.y2[triangle_record_counter];
             y1 = var_triangle.y1[triangle_record_counter];
+            *j = 0;
             for (i = circle_record_counter - 1; i != -1; i--) {
                 x3 = var_circle.x[i];
                 y3 = var_circle.y[i];
@@ -539,14 +480,9 @@ bool is_intersection(
                 triangle_cross_circle(
                         &x_1, &x_2, radius, x1, x2, x3, y1, y2, y3);
                 if (((x_1 < 0) || (x_2 < 0)) && ((x_1 <= 1) && (x_2 <= 1))) {
-                    if (intersects == false) {
-                        intersects = true;
-                        printf("intersects:\n");
-                    }
-                    printf("circle ( %.1lf %.1lf , %.1lf )\n",
-                           var_circle.x[i],
-                           var_circle.y[i],
-                           var_circle.radius[i]);
+                    ind_cir[*j] = i;
+                    *j = *j + 1;
+                    intersects = true;
                 }
             }
         }
@@ -555,4 +491,13 @@ bool is_intersection(
         return true;
     else
         return false;
+}
+
+void print_errormsg(int* circumflex_counter)
+{
+    for (int exit_anticipatorily = 0; exit_anticipatorily < *circumflex_counter;
+         exit_anticipatorily++) {
+        printf(" ");
+    }
+    printf("^\n");
 }

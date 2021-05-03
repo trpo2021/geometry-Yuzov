@@ -86,12 +86,20 @@ CTEST(IntersectCirc, one_in_the_other)
     var_circle.x[1] = 0;
     var_circle.y[1] = 0;
     var_circle.radius[1] = 5;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
+
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "circle");
+            "circle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = true;
 
@@ -110,13 +118,20 @@ CTEST(IntersectCirc, one_crosses_the_other)
     var_circle.x[1] = 1;
     var_circle.y[1] = 0;
     var_circle.radius[1] = 1;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "circle");
+            "circle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = true;
 
@@ -135,13 +150,20 @@ CTEST(IntersectCirc, one_doesnot_crosses_the_other)
     var_circle.x[1] = 100;
     var_circle.y[1] = 0;
     var_circle.radius[1] = 1;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "circle");
+            "circle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = false;
 
@@ -166,13 +188,20 @@ CTEST(IntersectTrian, one_side_coincides_with_the_other)
     var_triangle.y1[1] = 0;
     var_triangle.y2[1] = 0;
     var_triangle.y3[1] = -10;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "triangle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = true;
 
@@ -197,13 +226,20 @@ CTEST(IntersectTrian, common_vertex)
     var_triangle.y1[1] = 0;
     var_triangle.y2[1] = 0;
     var_triangle.y3[1] = -10;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "triangle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = true;
 
@@ -228,13 +264,20 @@ CTEST(IntersectTrian, intersection_at_multiple_points)
     var_triangle.y1[1] = 1;
     var_triangle.y2[1] = 2;
     var_triangle.y3[1] = 13;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "triangle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = true;
 
@@ -259,13 +302,20 @@ CTEST(IntersectTrian, triangles_do_not_intersect)
     var_triangle.y1[1] = 100;
     var_triangle.y2[1] = 200;
     var_triangle.y3[1] = 130;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "triangle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = false;
 
@@ -290,13 +340,20 @@ CTEST(IntersectTrianAndCircle, triangle_within_triangle)
     var_triangle.y1[1] = 1;
     var_triangle.y2[1] = 1;
     var_triangle.y3[1] = 6;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "triangle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = false;
 
@@ -318,13 +375,20 @@ CTEST(IntersectTrianAndCircle, circle_in_triangle)
     var_circle.x[0] = 3;
     var_circle.y[0] = 3;
     var_circle.radius[0] = 1;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "triangle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = false;
 
@@ -346,13 +410,20 @@ CTEST(IntersectTrianAndCircle, triangle_in_circle)
     var_circle.x[0] = 0;
     var_circle.y[0] = 0;
     var_circle.radius[0] = 100;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "circle");
+            "circle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = false;
 
@@ -374,13 +445,20 @@ CTEST(IntersectTrianAndCircle, intersection_at_multiple_points)
     var_circle.x[0] = 1;
     var_circle.y[0] = 1;
     var_circle.radius[0] = 2;
+    int ind_cir[SIZE_OF_ARR];
+    int ind_tri[SIZE_OF_ARR];
+    int circ_ind_cntr, tria_ind_cntr;
 
     bool real = is_intersection(
             circle_record_counter,
             triangle_record_counter,
             var_circle,
             var_triangle,
-            "triangle");
+            "triangle",
+            ind_cir,
+            ind_tri,
+            &circ_ind_cntr,
+            &tria_ind_cntr);
 
     bool exp = true;
 

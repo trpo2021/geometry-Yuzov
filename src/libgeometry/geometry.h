@@ -49,4 +49,8 @@ bool is_intersection(
         unsigned int triangle_record_counter,
         struct Circle var_circle,
         struct Triangle var_triangle,
-        char* figure_name);
+        char* figure_name, int* ind_cir,
+        int* ind_tri,
+        int* j,
+        int* g);
+void print_errormsg(int* circumflex_counter);
